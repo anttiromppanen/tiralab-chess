@@ -10,3 +10,6 @@ a chess game and secondly how to implement the bot to play against. These are st
 This is partly, because I was going for completely different subject for the project, but after doing research for it, it didn't feel right so the subject changed.
 
 Time: 6h
+
+## Next week
+First step is to do more research about the topic on how to implement the chess game, and after that second step is to start to code the frame for the project.
