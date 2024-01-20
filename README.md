@@ -1,6 +1,6 @@
 # Tiralab-chess
 
-A web-based chess game for datastructure and algorithm course at University of Helsinki.
+A web-based chess game for datastructures and algorithms course at University of Helsinki.
 
 ## Documentation
 
