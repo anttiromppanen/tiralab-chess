@@ -1,8 +1,10 @@
+import ChessboardBase from "./components/ChessboardBase/ChessboardBase";
+
 function App() {
   return (
-    <>
-      <h1>Hello world</h1>
-    </>
+    <main className="flex h-[100dvh] w-full items-center justify-center md:h-screen">
+      <ChessboardBase />
+    </main>
   );
 }
 
