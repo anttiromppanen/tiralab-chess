@@ -6,7 +6,7 @@ function ChessboardBase() {
   const [currentPosition, setCurrentPosition] = useState<BoardPosition | null>(
     null,
   );
-
+  console.log(currentPosition);
   return (
     <div className="w-1/3">
       <Chessboard
