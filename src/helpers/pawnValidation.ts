@@ -6,12 +6,22 @@ import {
 import { horizontalBoard, isPieceWhite } from "./moveValidation";
 import { pieceValues } from "../const/common";
 
+const validRowDirectionForWhite = (
+  sourceSquare: Square,
+  targetSquare: Square,
+) => Number(targetSquare[1]) - Number(sourceSquare[1]) === 1;
+
+const validRowDirectionForBlack = (
+  sourceSquare: Square,
+  targetSquare: Square,
+) => Number(targetSquare[1]) - Number(sourceSquare[1]) === -1;
+
 const validMoveForwardForWhite = (
   sourceSquare: Square,
   targetSquare: Square,
 ) => {
   const validColumn = sourceSquare[0] === targetSquare[0];
-  const validRow = Number(targetSquare[1]) - Number(sourceSquare[1]) === 1;
+  const validRow = validRowDirectionForWhite(sourceSquare, targetSquare);
   return validColumn && validRow;
 };
 
@@ -20,7 +30,7 @@ const validMoveForwardForBlack = (
   targetSquare: Square,
 ) => {
   const validColumn = sourceSquare[0] === targetSquare[0];
-  const validRow = Number(targetSquare[1]) - Number(sourceSquare[1]) === -1;
+  const validRow = validRowDirectionForBlack(sourceSquare, targetSquare);
   return validColumn && validRow;
 };
 
