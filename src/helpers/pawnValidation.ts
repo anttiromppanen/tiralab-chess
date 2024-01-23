@@ -55,10 +55,10 @@ const canPawnEat = (
   if (pieceAtTargetSquare === null || pieceAtTargetSquare === undefined)
     return false;
 
-  if (isPieceWhite(piece) && pieceAtTargetSquare[0] === "b") {
+  if (isPieceWhite(piece) && !isPieceWhite(pieceAtTargetSquare)) {
     return isAdjacentColumn && validRowForWhite;
   }
-  if (!isPieceWhite(piece) && pieceAtTargetSquare[0] === "w") {
+  if (!isPieceWhite(piece) && isPieceWhite(pieceAtTargetSquare)) {
     return isAdjacentColumn && validRowForBlack;
   }
 
