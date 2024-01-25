@@ -6,7 +6,7 @@ import {
   Square,
 } from "react-chessboard/dist/chessboard/types";
 import { initialBoardPosition } from "../../const/common";
-import validPawnMove from "../../helpers/pawnValidation";
+import validPawnMove from "../../helpers/pawn/pawnValidation";
 
 function ChessboardBase() {
   const [currentPosition, setCurrentPosition] =

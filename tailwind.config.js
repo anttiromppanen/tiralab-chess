@@ -1,3 +1,4 @@
+/* v8 ignore start */
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
