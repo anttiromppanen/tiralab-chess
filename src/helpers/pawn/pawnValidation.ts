@@ -3,7 +3,7 @@ import {
   Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
-import { horizontalBoard, isPieceWhite } from "../moveValidation";
+import { horizontalBoard, isPieceWhite } from "../common";
 import { pieceValues } from "../../const/common";
 
 // 1 means up on y-axis
@@ -37,7 +37,7 @@ export const validMoveForwardForBlack = (
 };
 
 export const canPawnEat = (
-  currentBoard: BoardPosition | null,
+  currentBoardPositions: BoardPosition | null,
   sourceSquare: Square,
   targetSquare: Square,
   piece: Piece,
@@ -52,7 +52,9 @@ export const canPawnEat = (
   const validRowForWhite = targetRow - currentRow === 1;
   const validRowForBlack = targetRow - currentRow === -1;
 
-  const pieceAtTargetSquare = currentBoard ? currentBoard[targetSquare] : null;
+  const pieceAtTargetSquare = currentBoardPositions
+    ? currentBoardPositions[targetSquare]
+    : null;
 
   if (pieceAtTargetSquare === null || pieceAtTargetSquare === undefined)
     return false;
