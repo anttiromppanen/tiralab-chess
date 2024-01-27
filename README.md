@@ -10,3 +10,4 @@ A web-based chess game for datastructures and algorithms course at University of
 
 ### Weekly reports
 [Week 1](https://github.com/anttiromppanen/tiralab-chess/blob/main/documentation/weekly_report_1.md)
+[Week 2](https://github.com/anttiromppanen/tiralab-chess/blob/main/documentation/weekly_report_2.md)
