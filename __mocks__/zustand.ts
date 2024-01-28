@@ -1,33 +1,55 @@
-import { act } from "react-dom/test-utils";
-import { vi } from "vitest";
+import * as zustand from "zustand";
+import { act } from "@testing-library/react";
 
-const actualCreate: (createState: unknown) => unknown =
-  await vi.importActual("zustand");
+const { create: actualCreate, createStore: actualCreateStore } =
+  await vi.importActual<typeof zustand>("zustand");
 
 // a variable to hold reset functions for all stores declared in the app
-const storeResetFns: Set<() => void> = new Set();
+export const storeResetFns = new Set<() => void>();
 
-type StateSetter<T> = (state: T) => void;
-type GetState<T> = () => T;
-
-type CreateState<T> = (set: (state: T) => void, get: () => T) => void;
-
-interface ZustandStore<T> {
-  getState: GetState<T>;
-  setState: StateSetter<T>;
-}
-
-// when creating a store, we get its initial state, create a reset function and add it in the set
-const create = <T>(createState: CreateState<T>): ZustandStore<T> => {
-  const store = actualCreate(createState) as ZustandStore<T>;
+const createUncurried = <T>(stateCreator: zustand.StateCreator<T>) => {
+  const store = actualCreate(stateCreator);
   const initialState = store.getState();
-  storeResetFns.add(() => store.setState(initialState));
+  storeResetFns.add(() => {
+    store.setState(initialState, true);
+  });
   return store;
 };
 
-// Reset all stores after each test run
-beforeEach(() => {
-  act(() => storeResetFns.forEach((resetFn) => resetFn()));
-});
+// when creating a store, we get its initial state, create a reset function and add it in the set
+export const create = (<T>(stateCreator: zustand.StateCreator<T>) => {
+  console.log("zustand create mock");
 
-export default create;
+  // to support curried version of create
+  return typeof stateCreator === "function"
+    ? createUncurried(stateCreator)
+    : createUncurried;
+}) as typeof zustand.create;
+
+const createStoreUncurried = <T>(stateCreator: zustand.StateCreator<T>) => {
+  const store = actualCreateStore(stateCreator);
+  const initialState = store.getState();
+  storeResetFns.add(() => {
+    store.setState(initialState, true);
+  });
+  return store;
+};
+
+// when creating a store, we get its initial state, create a reset function and add it in the set
+export const createStore = (<T>(stateCreator: zustand.StateCreator<T>) => {
+  console.log("zustand createStore mock");
+
+  // to support curried version of createStore
+  return typeof stateCreator === "function"
+    ? createStoreUncurried(stateCreator)
+    : createStoreUncurried;
+}) as typeof zustand.createStore;
+
+// reset all stores after each test run
+afterEach(() => {
+  act(() => {
+    storeResetFns.forEach((resetFn) => {
+      resetFn();
+    });
+  });
+});

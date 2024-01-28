@@ -11,7 +11,7 @@ interface PointsActions {
   resetPoints: () => void;
 }
 
-interface PointsStore extends PointsState, PointsActions {}
+export interface PointsStore extends PointsState, PointsActions {}
 
 const usePointsStore = create<PointsStore>((set) => ({
   whitePoints: 0,

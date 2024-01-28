@@ -7,6 +7,26 @@ import validPawnMove, { canPawnEat } from "./pawn/pawnValidation";
 import { isPieceWhite } from "./common";
 import captureCalculation from "./captureCalculation";
 
+interface CapturePieceProps {
+  capturePoints: number;
+  piece: Piece;
+  addPointsForWhite: (amount: number) => void;
+  addPointsForBlack: (amount: number) => void;
+}
+
+const capturePiece = ({
+  capturePoints,
+  piece,
+  addPointsForWhite,
+  addPointsForBlack,
+}: CapturePieceProps) => {
+  if (isPieceWhite(piece)) {
+    addPointsForWhite(capturePoints);
+  } else {
+    addPointsForBlack(capturePoints);
+  }
+};
+
 const handlePieceMove = (
   piece: Piece,
   source: Square,
@@ -38,11 +58,12 @@ const handlePieceMove = (
 
   if (canCapture) {
     const capturePoints = captureCalculation(capturedPiece);
-    if (isPieceWhite(piece)) {
-      addPointsForWhite(capturePoints);
-    } else {
-      addPointsForBlack(capturePoints);
-    }
+    capturePiece({
+      capturePoints,
+      piece,
+      addPointsForWhite,
+      addPointsForBlack,
+    });
   }
 
   return isValidMove;
