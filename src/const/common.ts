@@ -1,4 +1,5 @@
 import { BoardPosition, Piece } from "react-chessboard/dist/chessboard/types";
+import { BlackPieceValues, WhitePieceValues } from "../types/common";
 
 const initialBoardPosition: BoardPosition = {
   a8: "bR",
@@ -50,4 +51,27 @@ const pieceValues: Piece[] = [
   "bK",
 ];
 
-export { initialBoardPosition, pieceValues };
+const whitePieceValues: WhitePieceValues[] = [
+  "wP",
+  "wB",
+  "wN",
+  "wR",
+  "wQ",
+  "wK",
+];
+
+const blackPieceValues: BlackPieceValues[] = [
+  "bP",
+  "bB",
+  "bN",
+  "bR",
+  "bQ",
+  "bK",
+];
+
+export {
+  initialBoardPosition,
+  pieceValues,
+  whitePieceValues,
+  blackPieceValues,
+};
