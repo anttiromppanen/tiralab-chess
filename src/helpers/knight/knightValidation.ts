@@ -3,7 +3,15 @@ import {
   Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
-import { horizontalBoard } from "../common";
+import { arePiecesDifferentColor, horizontalBoard } from "../common";
+
+interface KnightValidationProps {
+  source: Square;
+  target: Square;
+  piece: Piece;
+  currentBoard: BoardPosition;
+  setCurrentBoard: (board: BoardPosition) => void;
+}
 
 export const validKnightMovesFromSquare = (
   source: Square,
@@ -38,13 +46,36 @@ export const validKnightMovesFromSquare = (
     ) {
       const square = `${horizontalBoard[newRow]}${newCol}` as Square;
       // push if square doesn't have same color piece in it
-      if (piece[0] !== currentBoard[square]?.[0]) validKnightMoves.push(square);
+      if (arePiecesDifferentColor(piece, square, currentBoard))
+        validKnightMoves.push(square);
     }
   });
 
   return validKnightMoves;
 };
 
-const knightValidation = () => {};
+export const canKnightCapture = (
+  source: Square,
+  target: Square,
+  piece: Piece,
+  currentBoard: BoardPosition,
+) => {
+  const validMoves = validKnightMovesFromSquare(source, piece, currentBoard);
+  return (
+    validMoves.includes(target) &&
+    currentBoard[target] !== undefined &&
+    arePiecesDifferentColor(piece, target, currentBoard)
+  );
+};
+
+const knightValidation = ({
+  source,
+  target,
+  piece,
+  currentBoard,
+  setCurrentBoard,
+}: KnightValidationProps) => {
+  console.log(source, target, piece, currentBoard, setCurrentBoard);
+};
 
 export default knightValidation;
