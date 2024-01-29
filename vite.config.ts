@@ -15,6 +15,7 @@ export default defineConfig({
         ...configDefaults.coverage.exclude,
         "src/const/**",
         "src/types/**",
+        "__mocks__/**",
       ],
     },
   },
