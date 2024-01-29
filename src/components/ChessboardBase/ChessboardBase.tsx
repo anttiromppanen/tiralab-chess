@@ -10,8 +10,6 @@ import handlePieceMove from "../../helpers/moveValidation";
 import usePointsStore from "../../store/usePointsStore";
 
 function ChessboardBase() {
-  const whitePoints = usePointsStore((state) => state.whitePoints);
-  const blackPoints = usePointsStore((state) => state.blackPoints);
   const addPointsForWhite = usePointsStore(
     (state) => state.increaseWhitePoints,
   );
@@ -31,7 +29,7 @@ function ChessboardBase() {
       addPointsForWhite,
       addPointsForBlack,
     );
-  console.log(whitePoints, blackPoints);
+
   return (
     <div className="w-1/3">
       <Chessboard
