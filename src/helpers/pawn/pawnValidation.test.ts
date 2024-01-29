@@ -5,10 +5,10 @@ import validPawnMove, {
 } from "./pawnValidation";
 
 describe("Pawn", () => {
-  let board = initialBoardPosition;
+  let board = { ...initialBoardPosition };
 
   afterEach(() => {
-    board = initialBoardPosition;
+    board = { ...initialBoardPosition };
   });
 
   describe("Moves with board", () => {

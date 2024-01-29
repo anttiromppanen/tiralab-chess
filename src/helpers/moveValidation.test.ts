@@ -15,10 +15,10 @@ const usePointsStore = create<PointsStore>()((set) => ({
 }));
 
 describe("moveValidation.ts", () => {
-  let board = initialBoardPosition;
+  let board = { ...initialBoardPosition };
 
   afterEach(() => {
-    board = initialBoardPosition;
+    board = { ...initialBoardPosition };
   });
 
   describe("Pawn", () => {
