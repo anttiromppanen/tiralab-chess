@@ -68,14 +68,24 @@ export const canKnightCapture = (
   );
 };
 
-const knightValidation = ({
+const validKnightMove = ({
   source,
   target,
   piece,
   currentBoard,
   setCurrentBoard,
 }: KnightValidationProps) => {
-  console.log(source, target, piece, currentBoard, setCurrentBoard);
+  const validMoves = validKnightMovesFromSquare(source, piece, currentBoard);
+
+  if (validMoves.includes(target)) {
+    const newBoard = currentBoard;
+    newBoard[target] = piece;
+    newBoard[source] = undefined;
+    setCurrentBoard(newBoard);
+    return true;
+  }
+
+  return false;
 };
 
-export default knightValidation;
+export default validKnightMove;

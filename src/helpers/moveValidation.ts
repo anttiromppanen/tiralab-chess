@@ -3,9 +3,10 @@ import {
   Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
-import validPawnMove, { canPawnEat } from "./pawn/pawnValidation";
-import { isPieceWhite } from "./common";
 import captureCalculation from "./captureCalculation";
+import { isPieceWhite } from "./common";
+import validKnightMove, { canKnightCapture } from "./knight/knightValidation";
+import validPawnMove, { canPawnEat } from "./pawn/pawnValidation";
 
 interface CapturePieceProps {
   capturePoints: number;
@@ -51,6 +52,21 @@ const handlePieceMove = (
         piece,
         setCurrentBoardPositions,
       );
+      break;
+    case "N":
+      canCapture = canKnightCapture(
+        source,
+        target,
+        piece,
+        currentBoardPositions,
+      );
+      isValidMove = validKnightMove({
+        source,
+        target,
+        piece,
+        currentBoard: currentBoardPositions,
+        setCurrentBoard: setCurrentBoardPositions,
+      });
       break;
     default:
       return false;
