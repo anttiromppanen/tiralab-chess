@@ -6,5 +6,5 @@ and a little bit of studying about how to implement the upcoming algorithms on o
 
 ## Next week
 
-First task of next week is to finish the final chess piece movements, and start on the general game logic. At this point the player can move some of the pieces, but the game
+First task of next week is to finish the final chess piece movements, and finish the general game logic and starting on the opponent AI after. At this point the player can move some of the pieces, but the game
 itself does not have any logic, which is not optimal for a chess game.
