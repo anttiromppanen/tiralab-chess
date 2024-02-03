@@ -3,7 +3,8 @@ import {
   Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
-import { arePiecesDifferentColor, horizontalBoard } from "../common";
+import { arePiecesDifferentColor } from "../common";
+import { horizontalBoard } from "../../const/common";
 
 interface KnightValidationProps {
   source: Square;

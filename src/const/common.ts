@@ -69,9 +69,12 @@ const blackPieceValues: BlackPieceValues[] = [
   "bK",
 ];
 
+const horizontalBoard = ["a", "b", "c", "d", "e", "f", "g", "h"];
+
 export {
   initialBoardPosition,
   pieceValues,
   whitePieceValues,
   blackPieceValues,
+  horizontalBoard,
 };

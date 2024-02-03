@@ -6,7 +6,8 @@ import {
 import captureCalculation from "./captureCalculation";
 import { isPieceWhite } from "./common";
 import validKnightMove, { canKnightCapture } from "./knight/knightValidation";
-import validPawnMove, { canPawnEat } from "./pawn/pawnValidation";
+import validPawnMove, { canPawnCapture } from "./pawn/pawnValidation";
+import validBishopMove, { canBishopCapture } from "./bishop/bishopValidation";
 
 interface CapturePieceProps {
   capturePoints: number;
@@ -44,7 +45,7 @@ const handlePieceMove = (
 
   switch (generalPieceType) {
     case "P":
-      canCapture = canPawnEat(currentBoardPositions, source, target, piece);
+      canCapture = canPawnCapture(currentBoardPositions, source, target, piece);
       isValidMove = validPawnMove(
         currentBoardPositions,
         source,
@@ -67,6 +68,21 @@ const handlePieceMove = (
         currentBoard: currentBoardPositions,
         setCurrentBoard: setCurrentBoardPositions,
       });
+      break;
+    case "B":
+      canCapture = canBishopCapture(
+        source,
+        target,
+        piece,
+        currentBoardPositions,
+      );
+      isValidMove = validBishopMove(
+        source,
+        target,
+        piece,
+        currentBoardPositions,
+        setCurrentBoardPositions,
+      );
       break;
     default:
       return false;

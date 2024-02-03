@@ -1,14 +1,11 @@
 import { Square } from "react-chessboard/dist/chessboard/types";
 import {
   blackPieceValues,
+  horizontalBoard,
   initialBoardPosition,
   whitePieceValues,
 } from "../const/common";
-import {
-  arePiecesDifferentColor,
-  horizontalBoard,
-  isPieceWhite,
-} from "./common";
+import { arePiecesDifferentColor, isPieceWhite } from "./common";
 
 describe("helpers/common.ts", () => {
   let board = { ...initialBoardPosition };
