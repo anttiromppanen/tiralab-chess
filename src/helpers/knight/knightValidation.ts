@@ -55,20 +55,6 @@ export const validKnightMovesFromSquare = (
   return validKnightMoves;
 };
 
-export const canKnightCapture = (
-  source: Square,
-  target: Square,
-  piece: Piece,
-  currentBoard: BoardPosition,
-) => {
-  const validMoves = validKnightMovesFromSquare(source, piece, currentBoard);
-  return (
-    validMoves.includes(target) &&
-    currentBoard[target] !== undefined &&
-    arePiecesDifferentColor(piece, target, currentBoard)
-  );
-};
-
 const validKnightMove = ({
   source,
   target,

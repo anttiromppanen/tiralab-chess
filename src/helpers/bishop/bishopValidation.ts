@@ -162,24 +162,6 @@ export const validBishopMovesFromSquare = (
   return validBishopMoves;
 };
 
-export const canBishopCapture = (
-  source: Square,
-  target: Square,
-  piece: Piece,
-  currentBoard: BoardPosition,
-) => {
-  const validBishopMoves = validBishopMovesFromSquare(
-    source,
-    piece,
-    currentBoard,
-  );
-  return (
-    validBishopMoves.includes(target) &&
-    currentBoard[target] !== undefined &&
-    arePiecesDifferentColor(piece, target, currentBoard)
-  );
-};
-
 const validBishopMove = (
   source: Square,
   target: Square,
