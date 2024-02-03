@@ -1,8 +1,5 @@
 import { initialBoardPosition } from "../../const/common";
-import {
-  canKnightCapture,
-  validKnightMovesFromSquare,
-} from "./knightValidation";
+import { validKnightMovesFromSquare } from "./knightValidation";
 
 describe("knightValidation.ts", () => {
   let board = { ...initialBoardPosition };
@@ -95,81 +92,6 @@ describe("knightValidation.ts", () => {
         const correctSquares = ["c2"];
         const result = validKnightMovesFromSquare("a1", "bK", board);
         expect(correctSquares.sort()).toEqual(result.sort());
-      });
-    });
-  });
-
-  describe("canKnightCapture", () => {
-    describe("White", () => {
-      it("should return true when c3 = wN, d5 = bP", () => {
-        board.d5 = "bP";
-        const canCapture = canKnightCapture("c3", "d5", "wN", board);
-        expect(canCapture).toBe(true);
-      });
-
-      it("should return false when f4 = wN, d5 = undefined", () => {
-        board.d5 = undefined;
-        const canCapture = canKnightCapture("f4", "d5", "wN", board);
-        expect(canCapture).toBe(false);
-      });
-
-      it("should return true for all possible squares from d5", () => {
-        board.b4 = "bN";
-        board.b6 = "bB";
-        board.c3 = "bN";
-        board.e3 = "bB";
-        board.f4 = "bQ";
-        board.f6 = "bR";
-        const possibleMoves = validKnightMovesFromSquare("d5", "wN", board);
-
-        possibleMoves.forEach((target) => {
-          const canCapture = canKnightCapture("d5", target, "wN", board);
-          expect(canCapture).toBe(true);
-        });
-      });
-
-      it("should return false for invalid targets from f4", () => {
-        board.g6 = "wP";
-        const possibleMoves = validKnightMovesFromSquare("f4", "wN", board);
-        possibleMoves.forEach((target) => {
-          const canCapture = canKnightCapture("f4", target, "wN", board);
-          expect(canCapture).toBe(false);
-        });
-      });
-    });
-
-    describe("Black", () => {
-      it("should return true when b4 = bN, a3 c3 = wP", () => {
-        board.b4 = "bN";
-        const canCapturea2 = canKnightCapture("b4", "a2", "bN", board);
-        const canCapturec2 = canKnightCapture("b4", "c2", "bN", board);
-        expect(canCapturea2).toBe(true);
-        expect(canCapturec2).toBe(true);
-      });
-
-      it("should return false when d5 = bN", () => {
-        const possibleMoves = validKnightMovesFromSquare("d5", "bN", board);
-        possibleMoves.forEach((target) => {
-          const canCapture = canKnightCapture("d5", target, "bN", board);
-          expect(canCapture).toBe(false);
-        });
-      });
-
-      it("should return true for all squares from f4", () => {
-        board.f4 = "bN";
-        board.d3 = "wP";
-        board.d5 = "wB";
-        board.e2 = "wN";
-        board.e6 = "wP";
-        board.g6 = "wQ";
-        board.h3 = "wN";
-        board.h5 = "wB";
-
-        const possibleMoves = validKnightMovesFromSquare("f4", "bN", board);
-        possibleMoves.forEach((target) => {
-          const canCapture = canKnightCapture("f4", target, "bN", board);
-          expect(canCapture).toBe(true);
-        });
       });
     });
   });

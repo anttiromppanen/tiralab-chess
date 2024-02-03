@@ -35,7 +35,7 @@ const isValidMoveForPiece = (
   return false;
 };
 
-const canPieceCapture = (
+export const canPieceCapture = (
   target: Square,
   piece: Piece,
   validMoves: Square[],
