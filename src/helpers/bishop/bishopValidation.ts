@@ -6,8 +6,6 @@ import {
 import { horizontalBoard } from "../../const/common";
 import { arePiecesDifferentColor } from "../common";
 
-export const handleWhenSquareContainsPiece = () => {};
-
 export const generateMovesLeftTop = (
   piece: Piece,
   currentBoard: BoardPosition,
@@ -23,7 +21,6 @@ export const generateMovesLeftTop = (
 
     if (currentBoard[squareToAdd]) {
       // if piece is opposite color, add to array
-      // need to add score for this
       if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validBishopMoves.push(squareToAdd);
       break;
@@ -52,7 +49,6 @@ export const generateMovesRightTop = (
 
     if (currentBoard[squareToAdd]) {
       // if piece is opposite color, add to array
-      // need to add score for this
       if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validBishopMoves.push(squareToAdd);
       break;
@@ -75,7 +71,6 @@ export const generateMovesLeftBottom = (
 
     if (currentBoard[squareToAdd]) {
       // if piece is opposite color, add to array
-      // need to add score for this
       if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validBishopMoves.push(squareToAdd);
       break;
@@ -99,7 +94,6 @@ export const generateMovesRightBottom = (
 
     if (currentBoard[squareToAdd]) {
       // if piece is opposite color, add to array
-      // need to add score for this
       if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validBishopMoves.push(squareToAdd);
       break;
