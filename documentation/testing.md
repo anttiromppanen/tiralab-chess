@@ -12,5 +12,6 @@ wasn't fully in place and judging from experice tests done too early might becom
 has gone more hand in hand with developing new logic for the project. Coverage has been fluxuating between 60-80% since adding test coverage. Coverage percent on its own isn't
 really put much effort into, but used as a tool to check if something vital part of logic is not tested yet.
 
+---
 
 ![Screenshot of testing coverage](https://github.com/anttiromppanen/tiralab-chess/blob/main/documentation/images/Screenshot%20from%202024-02-03%2020-59-40.png)
