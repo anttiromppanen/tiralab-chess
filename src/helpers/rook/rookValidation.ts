@@ -1,7 +1,6 @@
 import {
   BoardPosition,
   Piece,
-  // Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
 import { horizontalBoard } from "../../const/common";
@@ -27,35 +26,56 @@ export const generateMovesUpwards = (
 };
 
 export const generateMovesDownwards = (
+  piece: Piece,
   sourceColumnLetter: string,
   sourceRowNumber: number,
   validRookMoves: Square[],
+  currentBoard: BoardPosition,
 ) => {
   for (let i = sourceRowNumber - 1; i >= 1; i -= 1) {
     const squareToAdd = `${sourceColumnLetter}${i}` as Square;
+    if (currentBoard[squareToAdd]) {
+      if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
+        validRookMoves.push(squareToAdd);
+      break;
+    }
     validRookMoves.push(squareToAdd);
   }
 };
 
 export const generateMovesLeft = (
+  piece: Piece,
   sourceColumnLetterIndex: number,
   sourceRowNumber: number,
   validRookMoves: Square[],
+  currentBoard: BoardPosition,
 ) => {
   for (let i = sourceColumnLetterIndex - 1; i >= 0; i -= 1) {
     const squareToAdd = `${horizontalBoard[i]}${sourceRowNumber}` as Square;
+    if (currentBoard[squareToAdd]) {
+      if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
+        validRookMoves.push(squareToAdd);
+      break;
+    }
     validRookMoves.push(squareToAdd);
   }
 };
 
 export const generateMovesRight = (
+  piece: Piece,
   sourceColumnLetterIndex: number,
   sourceRowNumber: number,
   maxColumns: number,
   validRookMoves: Square[],
+  currentBoard: BoardPosition,
 ) => {
   for (let i = sourceColumnLetterIndex + 1; i <= maxColumns; i += 1) {
     const squareToAdd = `${horizontalBoard[i]}${sourceRowNumber}` as Square;
+    if (currentBoard[squareToAdd]) {
+      if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
+        validRookMoves.push(squareToAdd);
+      break;
+    }
     validRookMoves.push(squareToAdd);
   }
 };
@@ -82,18 +102,29 @@ export const validRookMovesFromSquare = (
   );
 
   generateMovesRight(
+    piece,
     currentColumnLetterIndex,
     currentRowNumber,
     maxColumns,
     validRookMoves,
+    currentBoard,
   );
 
-  generateMovesDownwards(currentColumnLetter, currentRowNumber, validRookMoves);
-  generateMovesLeft(currentColumnLetterIndex, currentRowNumber, validRookMoves);
+  generateMovesDownwards(
+    piece,
+    currentColumnLetter,
+    currentRowNumber,
+    validRookMoves,
+    currentBoard,
+  );
+
+  generateMovesLeft(
+    piece,
+    currentColumnLetterIndex,
+    currentRowNumber,
+    validRookMoves,
+    currentBoard,
+  );
 
   return validRookMoves;
 };
-
-const validRookMove = () => {};
-
-export default validRookMove;
