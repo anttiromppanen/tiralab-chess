@@ -10,6 +10,7 @@ import { validKnightMovesFromSquare } from "./knight/knightValidation";
 import validPawnMove, { canPawnCapture } from "./pawn/pawnValidation";
 import validRookMovesFromSquare from "./rook/rookValidation";
 import validQueenMovesFromSquare from "./queen/queenValidation";
+import validKingMovesFromSquare from "./king/kingValidation";
 
 interface CapturePieceProps {
   capturePoints: number;
@@ -161,6 +162,21 @@ const handlePieceMove = (
       break;
     case "Q":
       validMoves = validQueenMovesFromSquare(
+        source,
+        piece,
+        currentBoardPositions,
+      );
+      [isValidMove, canCapture] = pieceMoveValidation(
+        source,
+        target,
+        piece,
+        validMoves,
+        currentBoardPositions,
+        setCurrentBoardPositions,
+      );
+      break;
+    case "K":
+      validMoves = validKingMovesFromSquare(
         source,
         piece,
         currentBoardPositions,
