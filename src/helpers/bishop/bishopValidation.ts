@@ -4,103 +4,12 @@ import {
   Square,
 } from "react-chessboard/dist/chessboard/types";
 import { horizontalBoard } from "../../const/common";
-import { arePiecesDifferentColor } from "../common";
-
-export const generateMovesLeftTop = (
-  piece: Piece,
-  currentBoard: BoardPosition,
-  columnIndex: number,
-  rowIndex: number,
-  maxRows: number,
-  validBishopMoves: Square[],
-) => {
-  for (let i = 1; columnIndex - i >= 0 && rowIndex + i <= maxRows; i += 1) {
-    const squareToAdd = `${horizontalBoard[columnIndex - i]}${
-      rowIndex + i
-    }` as Square;
-
-    if (currentBoard[squareToAdd]) {
-      // if piece is opposite color, add to array
-      if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
-        validBishopMoves.push(squareToAdd);
-      break;
-    }
-    validBishopMoves.push(squareToAdd);
-  }
-};
-
-export const generateMovesRightTop = (
-  piece: Piece,
-  currentBoard: BoardPosition,
-  columnIndex: number,
-  rowIndex: number,
-  maxRows: number,
-  maxColumns: number,
-  validBishopMoves: Square[],
-) => {
-  for (
-    let i = 1;
-    columnIndex + i <= maxColumns && rowIndex + i <= maxRows;
-    i += 1
-  ) {
-    const squareToAdd = `${horizontalBoard[columnIndex + i]}${
-      rowIndex + i
-    }` as Square;
-
-    if (currentBoard[squareToAdd]) {
-      // if piece is opposite color, add to array
-      if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
-        validBishopMoves.push(squareToAdd);
-      break;
-    }
-    validBishopMoves.push(squareToAdd);
-  }
-};
-
-export const generateMovesLeftBottom = (
-  piece: Piece,
-  currentBoard: BoardPosition,
-  columnIndex: number,
-  rowIndex: number,
-  validBishopMoves: Square[],
-) => {
-  for (let i = 1; columnIndex - i >= 0 && rowIndex - i >= 1; i += 1) {
-    const squareToAdd = `${horizontalBoard[columnIndex - i]}${
-      rowIndex - i
-    }` as Square;
-
-    if (currentBoard[squareToAdd]) {
-      // if piece is opposite color, add to array
-      if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
-        validBishopMoves.push(squareToAdd);
-      break;
-    }
-    validBishopMoves.push(squareToAdd);
-  }
-};
-
-export const generateMovesRightBottom = (
-  piece: Piece,
-  currentBoard: BoardPosition,
-  columnIndex: number,
-  rowIndex: number,
-  maxColumns: number,
-  validBishopMoves: Square[],
-) => {
-  for (let i = 1; columnIndex + i <= maxColumns && rowIndex - i >= 1; i += 1) {
-    const squareToAdd = `${horizontalBoard[columnIndex + i]}${
-      rowIndex - i
-    }` as Square;
-
-    if (currentBoard[squareToAdd]) {
-      // if piece is opposite color, add to array
-      if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
-        validBishopMoves.push(squareToAdd);
-      break;
-    }
-    validBishopMoves.push(squareToAdd);
-  }
-};
+import {
+  generateMovesLeftBottom,
+  generateMovesLeftTop,
+  generateMovesRightBottom,
+  generateMovesRightTop,
+} from "../generateMovesForPiece";
 
 export const validBishopMovesFromSquare = (
   source: Square,

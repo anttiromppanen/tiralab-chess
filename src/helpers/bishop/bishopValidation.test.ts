@@ -1,12 +1,12 @@
 import { BoardPosition, Square } from "react-chessboard/dist/chessboard/types";
 import { initialBoardPosition } from "../../const/common";
+import { validBishopMovesFromSquare } from "./bishopValidation";
 import {
   generateMovesLeftBottom,
   generateMovesLeftTop,
   generateMovesRightBottom,
   generateMovesRightTop,
-  validBishopMovesFromSquare,
-} from "./bishopValidation";
+} from "../generateMovesForPiece";
 
 describe("bishopValidation.ts", () => {
   let board = { ...initialBoardPosition };

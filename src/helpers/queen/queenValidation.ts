@@ -5,59 +5,52 @@ import {
 } from "react-chessboard/dist/chessboard/types";
 import { horizontalBoard } from "../../const/common";
 import {
-  generateMovesDownwards,
-  generateMovesLeft,
-  generateMovesRight,
-  generateMovesUpwards,
+  generateMovesDiagonally,
+  generateMovesHorizontally,
+  generateMovesVertically,
 } from "../generateMovesForPiece";
 
-const validRookMovesFromSquare = (
+const validQueenMovesFromSquare = (
   source: Square,
   piece: Piece,
   currentBoard: BoardPosition,
 ) => {
-  const validRookMoves: Square[] = [];
+  const validQueenMoves: Square[] = [];
   const currentColumnLetter = source[0];
   const currentColumnLetterIndex = horizontalBoard.indexOf(currentColumnLetter);
   const currentRowNumber = Number(source[1]);
   const maxColumns = 7;
   const maxRows = 8;
 
-  generateMovesUpwards(
+  generateMovesVertically(
     piece,
     currentColumnLetter,
     currentRowNumber,
     maxRows,
-    validRookMoves,
+    validQueenMoves,
     currentBoard,
   );
 
-  generateMovesRight(
+  generateMovesHorizontally(
     piece,
     currentColumnLetterIndex,
     currentRowNumber,
     maxColumns,
-    validRookMoves,
+    validQueenMoves,
     currentBoard,
   );
 
-  generateMovesDownwards(
+  generateMovesDiagonally(
     piece,
-    currentColumnLetter,
-    currentRowNumber,
-    validRookMoves,
     currentBoard,
-  );
-
-  generateMovesLeft(
-    piece,
     currentColumnLetterIndex,
     currentRowNumber,
-    validRookMoves,
-    currentBoard,
+    maxRows,
+    maxColumns,
+    validQueenMoves,
   );
 
-  return validRookMoves;
+  return validQueenMoves;
 };
 
-export default validRookMovesFromSquare;
+export default validQueenMovesFromSquare;

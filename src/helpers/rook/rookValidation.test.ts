@@ -5,7 +5,7 @@ import {
   generateMovesLeft,
   generateMovesRight,
   generateMovesUpwards,
-} from "./rookValidation";
+} from "../generateMovesForPiece";
 
 describe("rookValidation.ts", () => {
   let emptyBoard: BoardPosition = {};
