@@ -8,6 +8,7 @@ import {
 import { initialBoardPosition } from "../../const/common";
 import handlePieceMove from "../../helpers/moveValidation";
 import usePointsStore from "../../store/usePointsStore";
+import generateAllMovesFromPosition from "../../helpers/generateAllMovesFromPosition";
 
 function ChessboardBase() {
   const addPointsForWhite = usePointsStore(
@@ -29,7 +30,7 @@ function ChessboardBase() {
       addPointsForWhite,
       addPointsForBlack,
     );
-
+  generateAllMovesFromPosition(currentBoardPositions);
   return (
     <div className="w-1/3">
       <Chessboard
