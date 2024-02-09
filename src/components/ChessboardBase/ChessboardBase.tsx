@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Chessboard } from "react-chessboard";
 import {
   BoardPosition,
@@ -11,17 +11,31 @@ import usePointsStore from "../../store/usePointsStore";
 import generateAllMovesFromPosition from "../../helpers/generateAllMovesFromPosition";
 
 function ChessboardBase() {
+  const [currentBoardPositions, setCurrentBoardPositions] =
+    useState<BoardPosition>(initialBoardPosition);
   const addPointsForWhite = usePointsStore(
     (state) => state.increaseWhitePoints,
   );
   const addPointsForBlack = usePointsStore(
     (state) => state.increaseBlackPoints,
   );
-  const [currentBoardPositions, setCurrentBoardPositions] =
-    useState<BoardPosition>(initialBoardPosition);
+  const [colorToMove, setColorToMove] = useState<"w" | "b">("w");
+  const [allMovesOnBoard, setAllMovesOnBoard] = useState(
+    generateAllMovesFromPosition(currentBoardPositions),
+  );
 
-  const handlePieceDrop = (source: Square, target: Square, piece: Piece) =>
-    handlePieceMove(
+  useEffect(() => {
+    if (colorToMove === "b")
+      setAllMovesOnBoard(generateAllMovesFromPosition(currentBoardPositions));
+  }, [colorToMove, currentBoardPositions]);
+
+  const handleColorToMoveChange = () =>
+    setColorToMove((state) => (state === "w" ? "b" : "w"));
+
+  const handlePieceDrop = (source: Square, target: Square, piece: Piece) => {
+    if (piece[0] !== colorToMove) return false;
+
+    const isValidMove = handlePieceMove(
       piece,
       source,
       target,
@@ -30,7 +44,12 @@ function ChessboardBase() {
       addPointsForWhite,
       addPointsForBlack,
     );
-  generateAllMovesFromPosition(currentBoardPositions);
+
+    if (isValidMove) handleColorToMoveChange();
+
+    return isValidMove;
+  };
+
   return (
     <div className="w-1/3">
       <Chessboard
