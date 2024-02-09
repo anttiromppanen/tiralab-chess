@@ -5,7 +5,7 @@ import {
   initialBoardPosition,
   whitePieceValues,
 } from "../const/common";
-import { arePiecesDifferentColor, isPieceWhite } from "./common";
+import { arePiecesDifferentColor, isPieceWhite, isValidSquare } from "./common";
 
 describe("helpers/common.ts", () => {
   let board = { ...initialBoardPosition };
@@ -126,6 +126,32 @@ describe("helpers/common.ts", () => {
           expect(result).toBe(false);
         });
       });
+    });
+  });
+
+  describe("isValidSquare", () => {
+    it("should return false if (7 < columnLetterIndex < 0) and (8 < rowNumber < 1)", () => {
+      const result1 = isValidSquare(-1, 1);
+      const result2 = isValidSquare(0, 0);
+      const result3 = isValidSquare(8, 1);
+      const result4 = isValidSquare(4, 9);
+      expect(result1).toBe(false);
+      expect(result2).toBe(false);
+      expect(result3).toBe(false);
+      expect(result4).toBe(false);
+    });
+
+    it("should return true for values in correct range", () => {
+      let randomNumber: number;
+
+      for (let i = 0; i <= 7; i += 1) {
+        randomNumber = Math.floor(Math.random() * 8) + 1;
+        expect(isValidSquare(i, randomNumber)).toBe(true);
+      }
+      for (let i = 1; i <= 8; i += 1) {
+        randomNumber = Math.floor(Math.random() * 8);
+        expect(isValidSquare(randomNumber, i)).toBe(true);
+      }
     });
   });
 });

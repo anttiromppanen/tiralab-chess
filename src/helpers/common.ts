@@ -16,3 +16,9 @@ export const arraysAreEqual = <T>(arr1: Array<T>, arr2: Array<T>) => {
   if (arr1.length !== arr2.length) return false;
   return arr1.every((value) => arr2.includes(value));
 };
+
+export const isValidSquare = (columnLetterIndex: number, rowNumber: number) =>
+  columnLetterIndex >= 0 &&
+  columnLetterIndex <= 7 &&
+  rowNumber >= 1 &&
+  rowNumber <= 8;
