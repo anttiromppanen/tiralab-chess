@@ -49,7 +49,7 @@ function ChessboardBase() {
 
     return isValidMove;
   };
-
+  console.log(allMovesOnBoard);
   return (
     <div className="w-1/3">
       <Chessboard
