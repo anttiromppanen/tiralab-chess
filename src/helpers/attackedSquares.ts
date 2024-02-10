@@ -16,13 +16,20 @@ const attackedSquares = (color: "w" | "b", currentBoard: BoardPosition) => {
     b: undefined,
   };
   let allAttackedSquares: Record<string, boolean> = {};
+
   // finds king positions and filters results by color
   const piecesByColor = Object.entries(currentBoard).filter(
-    ([square, [pieceColor, pieceValue]]) => {
-      if (pieceValue === "K")
-        if (pieceColor === "w") kingPositions.w = square;
-        else kingPositions.b = square;
-      return pieceColor !== color;
+    ([square, piece]) => {
+      if (piece && piece.length === 2) {
+        // Check if piece is not undefined and has a length of 2
+        const [pieceColor, pieceValue] = piece;
+        if (pieceValue === "K") {
+          if (pieceColor === "w") kingPositions.w = square;
+          else kingPositions.b = square;
+        }
+        return pieceColor !== color;
+      }
+      return false;
     },
   );
 

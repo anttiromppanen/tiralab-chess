@@ -81,8 +81,10 @@ describe("isCheckOrMate.ts", () => {
 
   describe("isCheckmated", () => {
     it("should return true if white is checkmated", () => {
-      emptyBoard.a8 = "wK";
-      emptyBoard.b6 = "bQ";
+      emptyBoard.h8 = "wK";
+      emptyBoard.g7 = "bB";
+      emptyBoard.c4 = "bB";
+      emptyBoard.h6 = "bK";
 
       const result = isCheckmated("w", emptyBoard);
       expect(result).toBe(true);

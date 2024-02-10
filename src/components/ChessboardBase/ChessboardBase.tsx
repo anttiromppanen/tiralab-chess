@@ -34,10 +34,10 @@ function ChessboardBase() {
     setColorToMove((state) => (state === "w" ? "b" : "w"));
 
   const handlePieceDrop = (source: Square, target: Square, piece: Piece) => {
+    const { isKingAttacked } = isChecked(colorToMove, currentBoardPositions);
     if (piece[0] !== colorToMove) return false;
     if (isCheckmated(colorToMove, currentBoardPositions)) return false;
-    if (isChecked(colorToMove, currentBoardPositions) && piece[1] !== "K")
-      return false;
+    if (isKingAttacked && piece[1] !== "K") return false;
 
     const isValidMove = handlePieceMove(
       piece,
