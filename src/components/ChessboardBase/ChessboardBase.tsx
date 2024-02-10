@@ -9,6 +9,7 @@ import { initialBoardPosition } from "../../const/common";
 import generateAllMovesFromPosition from "../../helpers/generateAllMovesFromPosition";
 import handlePieceMove from "../../helpers/moveValidation";
 import usePointsStore from "../../store/usePointsStore";
+import { isChecked, isCheckmated } from "../../helpers/checkmate/isCheckOrMate";
 
 function ChessboardBase() {
   const [currentBoardPositions, setCurrentBoardPositions] =
@@ -34,6 +35,9 @@ function ChessboardBase() {
 
   const handlePieceDrop = (source: Square, target: Square, piece: Piece) => {
     if (piece[0] !== colorToMove) return false;
+    if (isCheckmated(colorToMove, currentBoardPositions)) return false;
+    if (isChecked(colorToMove, currentBoardPositions) && piece[1] !== "K")
+      return false;
 
     const isValidMove = handlePieceMove(
       piece,
