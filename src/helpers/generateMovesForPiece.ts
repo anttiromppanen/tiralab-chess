@@ -13,6 +13,7 @@ export const generateMovesLeftTop = (
   rowIndex: number,
   maxRows: number,
   validMoves: Square[],
+  includeBlockedSquares: boolean = false,
 ) => {
   for (let i = 1; columnIndex - i >= 0 && rowIndex + i <= maxRows; i += 1) {
     const squareToAdd = `${horizontalBoard[columnIndex - i]}${
@@ -20,8 +21,9 @@ export const generateMovesLeftTop = (
     }` as Square;
 
     if (currentBoard[squareToAdd]) {
+      if (includeBlockedSquares) validMoves.push(squareToAdd);
       // if piece is opposite color, add to array
-      if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
+      else if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
       break;
     }
@@ -37,6 +39,7 @@ export const generateMovesRightTop = (
   maxRows: number,
   maxColumns: number,
   validMoves: Square[],
+  includeBlockedSquares: boolean = false,
 ) => {
   for (
     let i = 1;
@@ -48,8 +51,9 @@ export const generateMovesRightTop = (
     }` as Square;
 
     if (currentBoard[squareToAdd]) {
+      if (includeBlockedSquares) validMoves.push(squareToAdd);
       // if piece is opposite color, add to array
-      if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
+      else if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
       break;
     }
@@ -63,6 +67,7 @@ export const generateMovesLeftBottom = (
   columnIndex: number,
   rowIndex: number,
   validMoves: Square[],
+  includeBlockedSquares: boolean = false,
 ) => {
   for (let i = 1; columnIndex - i >= 0 && rowIndex - i >= 1; i += 1) {
     const squareToAdd = `${horizontalBoard[columnIndex - i]}${
@@ -70,8 +75,9 @@ export const generateMovesLeftBottom = (
     }` as Square;
 
     if (currentBoard[squareToAdd]) {
+      if (includeBlockedSquares) validMoves.push(squareToAdd);
       // if piece is opposite color, add to array
-      if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
+      else if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
       break;
     }
@@ -86,6 +92,7 @@ export const generateMovesRightBottom = (
   rowIndex: number,
   maxColumns: number,
   validMoves: Square[],
+  includeBlockedSquares: boolean = false,
 ) => {
   for (let i = 1; columnIndex + i <= maxColumns && rowIndex - i >= 1; i += 1) {
     const squareToAdd = `${horizontalBoard[columnIndex + i]}${
@@ -93,8 +100,9 @@ export const generateMovesRightBottom = (
     }` as Square;
 
     if (currentBoard[squareToAdd]) {
+      if (includeBlockedSquares) validMoves.push(squareToAdd);
       // if piece is opposite color, add to array
-      if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
+      else if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
       break;
     }
@@ -109,11 +117,13 @@ export const generateMovesUpwards = (
   maxRows: number,
   validMoves: Square[],
   currentBoard: BoardPosition,
+  includeBlockedSquares: boolean = false,
 ) => {
   for (let i = sourceRowNumber + 1; i <= maxRows; i += 1) {
     const squareToAdd = `${sourceColumnLetter}${i}` as Square;
     if (currentBoard[squareToAdd]) {
-      if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
+      if (includeBlockedSquares) validMoves.push(squareToAdd);
+      else if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
       break;
     }
@@ -127,11 +137,13 @@ export const generateMovesDownwards = (
   sourceRowNumber: number,
   validMoves: Square[],
   currentBoard: BoardPosition,
+  includeBlockedSquares: boolean = false,
 ) => {
   for (let i = sourceRowNumber - 1; i >= 1; i -= 1) {
     const squareToAdd = `${sourceColumnLetter}${i}` as Square;
     if (currentBoard[squareToAdd]) {
-      if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
+      if (includeBlockedSquares) validMoves.push(squareToAdd);
+      else if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
       break;
     }
@@ -145,10 +157,12 @@ export const generateMovesLeft = (
   sourceRowNumber: number,
   validMoves: Square[],
   currentBoard: BoardPosition,
+  includeBlockedSquares: boolean = false,
 ) => {
   for (let i = sourceColumnLetterIndex - 1; i >= 0; i -= 1) {
     const squareToAdd = `${horizontalBoard[i]}${sourceRowNumber}` as Square;
     if (currentBoard[squareToAdd]) {
+      if (includeBlockedSquares) validMoves.push(squareToAdd);
       if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
       break;
@@ -164,10 +178,12 @@ export const generateMovesRight = (
   maxColumns: number,
   validMoves: Square[],
   currentBoard: BoardPosition,
+  includeBlockedSquares: boolean = false,
 ) => {
   for (let i = sourceColumnLetterIndex + 1; i <= maxColumns; i += 1) {
     const squareToAdd = `${horizontalBoard[i]}${sourceRowNumber}` as Square;
     if (currentBoard[squareToAdd]) {
+      if (includeBlockedSquares) validMoves.push(squareToAdd);
       if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
       break;
@@ -183,6 +199,7 @@ export const generateMovesVertically = (
   maxRows: number,
   validMoves: Square[],
   currentBoard: BoardPosition,
+  includeBlockedSquares: boolean = false,
 ) => {
   generateMovesUpwards(
     piece,
@@ -191,6 +208,7 @@ export const generateMovesVertically = (
     maxRows,
     validMoves,
     currentBoard,
+    includeBlockedSquares,
   );
   generateMovesDownwards(
     piece,
@@ -198,6 +216,7 @@ export const generateMovesVertically = (
     sourceRowNumber,
     validMoves,
     currentBoard,
+    includeBlockedSquares,
   );
 };
 
@@ -208,6 +227,7 @@ export const generateMovesHorizontally = (
   maxColumns: number,
   validMoves: Square[],
   currentBoard: BoardPosition,
+  includeBlockedSquares: boolean = false,
 ) => {
   generateMovesLeft(
     piece,
@@ -215,6 +235,7 @@ export const generateMovesHorizontally = (
     sourceRowNumber,
     validMoves,
     currentBoard,
+    includeBlockedSquares,
   );
   generateMovesRight(
     piece,
@@ -223,6 +244,7 @@ export const generateMovesHorizontally = (
     maxColumns,
     validMoves,
     currentBoard,
+    includeBlockedSquares,
   );
 };
 
@@ -234,6 +256,7 @@ export const generateMovesDiagonally = (
   maxRows: number,
   maxColumns: number,
   validMoves: Square[],
+  includeBlockedSquares: boolean = false,
 ) => {
   generateMovesLeftTop(
     piece,
@@ -242,6 +265,7 @@ export const generateMovesDiagonally = (
     rowIndex,
     maxRows,
     validMoves,
+    includeBlockedSquares,
   );
   generateMovesRightBottom(
     piece,
@@ -250,6 +274,7 @@ export const generateMovesDiagonally = (
     rowIndex,
     maxColumns,
     validMoves,
+    includeBlockedSquares,
   );
   generateMovesRightTop(
     piece,
@@ -259,6 +284,7 @@ export const generateMovesDiagonally = (
     maxRows,
     maxColumns,
     validMoves,
+    includeBlockedSquares,
   );
   generateMovesLeftBottom(
     piece,
@@ -266,5 +292,6 @@ export const generateMovesDiagonally = (
     columnIndex,
     rowIndex,
     validMoves,
+    includeBlockedSquares,
   );
 };

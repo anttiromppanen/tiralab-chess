@@ -11,12 +11,13 @@ import {
   generateMovesRightTop,
 } from "../generateMovesForPiece";
 
-export const validBishopMovesFromSquare = (
+export const generateValidBishopMoves = (
   source: Square,
   piece: Piece,
   currentBoard: BoardPosition,
+  validBishopMoves: Square[],
+  includeBlockedSquares = false,
 ) => {
-  const validBishopMoves: Square[] = [];
   const selectedSquareColumnLetter = source[0];
   const selectedSquareColumnLetterIndex = horizontalBoard.indexOf(
     selectedSquareColumnLetter,
@@ -33,6 +34,7 @@ export const validBishopMovesFromSquare = (
     selectedSquareRowNumber,
     maxRows,
     validBishopMoves,
+    includeBlockedSquares,
   );
 
   generateMovesRightTop(
@@ -43,6 +45,7 @@ export const validBishopMovesFromSquare = (
     maxRows,
     maxColumns,
     validBishopMoves,
+    includeBlockedSquares,
   );
 
   generateMovesLeftBottom(
@@ -51,6 +54,7 @@ export const validBishopMovesFromSquare = (
     selectedSquareColumnLetterIndex,
     selectedSquareRowNumber,
     validBishopMoves,
+    includeBlockedSquares,
   );
 
   generateMovesRightBottom(
@@ -60,11 +64,39 @@ export const validBishopMovesFromSquare = (
     selectedSquareRowNumber,
     maxColumns,
     validBishopMoves,
+    includeBlockedSquares,
   );
+};
+
+export const validBishopMovesFromSquare = (
+  source: Square,
+  piece: Piece,
+  currentBoard: BoardPosition,
+) => {
+  const validBishopMoves: Square[] = [];
+
+  generateValidBishopMoves(source, piece, currentBoard, validBishopMoves);
 
   return validBishopMoves;
 };
 
+export const allAttackedSquaresByBishop = (
+  piece: Piece,
+  source: Square,
+  currentBoard: BoardPosition,
+  allAttackedSquares: Record<string, boolean>,
+) => {
+  const newAttackedSquares = allAttackedSquares;
+  const validBishopMoves: Square[] = [];
+
+  generateValidBishopMoves(source, piece, currentBoard, validBishopMoves, true);
+
+  validBishopMoves.forEach((square) => {
+    newAttackedSquares[square] = true;
+  });
+
+  return newAttackedSquares;
+};
 const validBishopMove = (
   source: Square,
   target: Square,

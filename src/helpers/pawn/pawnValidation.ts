@@ -3,7 +3,7 @@ import {
   Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
-import { isPieceWhite } from "../common";
+import { isPieceWhite, isValidSquare } from "../common";
 import { pieceValues, horizontalBoard } from "../../const/common";
 
 // 1 means up on y-axis
@@ -125,6 +125,44 @@ export const isSquareBlocked = (
   return sourceColumn === targetColumn;
 };
 
+export const allAttackedSquaresByPawn = (
+  piece: Piece,
+  source: Square,
+  attackedSquares: Record<Square, boolean>,
+) => {
+  const newAttackedSquares = attackedSquares;
+  const columnLetter = source[0];
+  const columnLetterIndex = horizontalBoard.indexOf(columnLetter);
+  const rowNumber = Number(source[1]);
+
+  const upLeftSquare = `${horizontalBoard[columnLetterIndex - 1]}${
+    rowNumber + 1
+  }` as Square;
+  const upRightSquare = `${horizontalBoard[columnLetterIndex + 1]}${
+    rowNumber + 1
+  }` as Square;
+  const downLeftSquare = `${horizontalBoard[columnLetterIndex - 1]}${
+    rowNumber - 1
+  }` as Square;
+  const downRightSquare = `${horizontalBoard[columnLetterIndex + 1]}${
+    rowNumber - 1
+  }` as Square;
+
+  if (isPieceWhite(piece)) {
+    if (isValidSquare(columnLetterIndex - 1, rowNumber + 1))
+      newAttackedSquares[upLeftSquare] = true;
+    if (isValidSquare(columnLetterIndex + 1, rowNumber + 1))
+      newAttackedSquares[upRightSquare] = true;
+  } else {
+    if (isValidSquare(columnLetterIndex - 1, rowNumber - 1))
+      newAttackedSquares[downLeftSquare] = true;
+    if (isValidSquare(columnLetterIndex + 1, rowNumber - 1))
+      newAttackedSquares[downRightSquare] = true;
+  }
+
+  return newAttackedSquares;
+};
+
 export const validPawnMovesFromSquare = (
   source: Square,
   piece: Piece,
@@ -135,6 +173,7 @@ export const validPawnMovesFromSquare = (
   const columnLetterIndex = horizontalBoard.indexOf(columnLetter);
   const rowNumber = Number(source[1]);
 
+  // all directions for pawn
   const straightUpSquare = `${columnLetter}${rowNumber + 1}` as Square;
   const upLeftSquare = `${horizontalBoard[columnLetterIndex - 1]}${
     rowNumber + 1
@@ -150,6 +189,7 @@ export const validPawnMovesFromSquare = (
     rowNumber - 1
   }` as Square;
 
+  // validation for possible squares
   if (isPieceWhite(piece)) {
     if (
       validMoveForwardForWhite(source, straightUpSquare) &&

@@ -10,12 +10,13 @@ import {
   generateMovesVertically,
 } from "../generateMovesForPiece";
 
-const validQueenMovesFromSquare = (
+const generateValidQueenMoves = (
   source: Square,
   piece: Piece,
   currentBoard: BoardPosition,
+  validQueenMoves: Square[],
+  includeBlockedSquares = false,
 ) => {
-  const validQueenMoves: Square[] = [];
   const currentColumnLetter = source[0];
   const currentColumnLetterIndex = horizontalBoard.indexOf(currentColumnLetter);
   const currentRowNumber = Number(source[1]);
@@ -29,6 +30,7 @@ const validQueenMovesFromSquare = (
     maxRows,
     validQueenMoves,
     currentBoard,
+    includeBlockedSquares,
   );
 
   generateMovesHorizontally(
@@ -38,6 +40,7 @@ const validQueenMovesFromSquare = (
     maxColumns,
     validQueenMoves,
     currentBoard,
+    includeBlockedSquares,
   );
 
   generateMovesDiagonally(
@@ -48,9 +51,38 @@ const validQueenMovesFromSquare = (
     maxRows,
     maxColumns,
     validQueenMoves,
+    includeBlockedSquares,
   );
+};
+
+const validQueenMovesFromSquare = (
+  source: Square,
+  piece: Piece,
+  currentBoard: BoardPosition,
+) => {
+  const validQueenMoves: Square[] = [];
+
+  generateValidQueenMoves(source, piece, currentBoard, validQueenMoves);
 
   return validQueenMoves;
+};
+
+export const allAttackedSquaresByQueen = (
+  piece: Piece,
+  source: Square,
+  currentBoard: BoardPosition,
+  allAttackedSquares: Record<string, boolean>,
+) => {
+  const newAttackedSquares = allAttackedSquares;
+  const validQueenMoves: Square[] = [];
+
+  generateValidQueenMoves(source, piece, currentBoard, validQueenMoves, true);
+
+  validQueenMoves.forEach((square) => {
+    newAttackedSquares[square] = true;
+  });
+
+  return newAttackedSquares;
 };
 
 export default validQueenMovesFromSquare;

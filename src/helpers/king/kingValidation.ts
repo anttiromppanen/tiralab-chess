@@ -6,10 +6,11 @@ import {
 import { horizontalBoard } from "../../const/common";
 import { arePiecesDifferentColor } from "../common";
 
-const validKingMovesFromSquare = (
+export const generateValidKingMoves = (
   source: Square,
   piece: Piece,
   currentBoard: BoardPosition,
+  includeBlockedSquares = false,
 ) => {
   let validKingMoves: Square[] = [];
   const currentColumnLetter = source[0];
@@ -69,13 +70,41 @@ const validKingMovesFromSquare = (
     right,
     bottomRight,
     bottom,
-  ].filter(
-    (square): square is Square =>
-      !!square &&
-      arePiecesDifferentColor(piece, square as Square, currentBoard),
-  );
+  ].filter((square): square is Square => {
+    if (includeBlockedSquares) return !!square;
+    return (
+      !!square && arePiecesDifferentColor(piece, square as Square, currentBoard)
+    );
+  });
 
   return validKingMoves;
+};
+
+const validKingMovesFromSquare = (
+  source: Square,
+  piece: Piece,
+  currentBoard: BoardPosition,
+) => generateValidKingMoves(source, piece, currentBoard);
+
+export const allAttackedSquaresByKing = (
+  piece: Piece,
+  source: Square,
+  currentBoard: BoardPosition,
+  allAttackedSquares: Record<string, boolean>,
+) => {
+  const newAttackedSquares = allAttackedSquares;
+  const validKingMoves = generateValidKingMoves(
+    source,
+    piece,
+    currentBoard,
+    true,
+  );
+
+  validKingMoves.forEach((square) => {
+    newAttackedSquares[square] = true;
+  });
+
+  return newAttackedSquares;
 };
 
 export default validKingMovesFromSquare;

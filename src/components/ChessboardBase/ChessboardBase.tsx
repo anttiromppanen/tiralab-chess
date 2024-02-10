@@ -6,9 +6,9 @@ import {
   Square,
 } from "react-chessboard/dist/chessboard/types";
 import { initialBoardPosition } from "../../const/common";
+import generateAllMovesFromPosition from "../../helpers/generateAllMovesFromPosition";
 import handlePieceMove from "../../helpers/moveValidation";
 import usePointsStore from "../../store/usePointsStore";
-import generateAllMovesFromPosition from "../../helpers/generateAllMovesFromPosition";
 
 function ChessboardBase() {
   const [currentBoardPositions, setCurrentBoardPositions] =

@@ -11,12 +11,13 @@ import {
   generateMovesUpwards,
 } from "../generateMovesForPiece";
 
-const validRookMovesFromSquare = (
+export const generateValidRookMoves = (
   source: Square,
   piece: Piece,
   currentBoard: BoardPosition,
+  validRookMoves: Square[],
+  includeBlockedSquares = false,
 ) => {
-  const validRookMoves: Square[] = [];
   const currentColumnLetter = source[0];
   const currentColumnLetterIndex = horizontalBoard.indexOf(currentColumnLetter);
   const currentRowNumber = Number(source[1]);
@@ -30,6 +31,7 @@ const validRookMovesFromSquare = (
     maxRows,
     validRookMoves,
     currentBoard,
+    includeBlockedSquares,
   );
 
   generateMovesRight(
@@ -39,6 +41,7 @@ const validRookMovesFromSquare = (
     maxColumns,
     validRookMoves,
     currentBoard,
+    includeBlockedSquares,
   );
 
   generateMovesDownwards(
@@ -47,6 +50,7 @@ const validRookMovesFromSquare = (
     currentRowNumber,
     validRookMoves,
     currentBoard,
+    includeBlockedSquares,
   );
 
   generateMovesLeft(
@@ -55,9 +59,38 @@ const validRookMovesFromSquare = (
     currentRowNumber,
     validRookMoves,
     currentBoard,
+    includeBlockedSquares,
   );
+};
+
+const validRookMovesFromSquare = (
+  source: Square,
+  piece: Piece,
+  currentBoard: BoardPosition,
+) => {
+  const validRookMoves: Square[] = [];
+
+  generateValidRookMoves(source, piece, currentBoard, validRookMoves);
 
   return validRookMoves;
+};
+
+export const allAttackedSquaresByRook = (
+  piece: Piece,
+  source: Square,
+  currentBoard: BoardPosition,
+  allAttackedSquares: Record<string, boolean>,
+) => {
+  const newAttackedSquares = allAttackedSquares;
+  const validRookMoves: Square[] = [];
+
+  generateValidRookMoves(source, piece, currentBoard, validRookMoves, true);
+
+  validRookMoves.forEach((square) => {
+    newAttackedSquares[square] = true;
+  });
+
+  return newAttackedSquares;
 };
 
 export default validRookMovesFromSquare;
