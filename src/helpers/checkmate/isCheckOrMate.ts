@@ -36,7 +36,10 @@ export const isChecked = (inTurn: "w" | "b", currentBoard: BoardPosition) => {
   return { isKingAttacked, possibleMovesAfterCheck };
 };
 
-export const isCheckMated = () =>
-  // currentBoard: BoardPosition,
-  // inTurn: "w" | "b",
-  false;
+export const isCheckmated = (
+  inTurn: "w" | "b",
+  currentBoard: BoardPosition,
+) => {
+  const { possibleMovesAfterCheck } = isChecked(inTurn, currentBoard);
+  return !possibleMovesAfterCheck.length;
+};
