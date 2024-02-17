@@ -5,16 +5,18 @@ import {
   Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
+import { useShallow } from "zustand/react/shallow";
 import { initialBoardPosition } from "../../const/common";
-import generateAllMovesFromPosition from "../../helpers/generateAllMovesFromPosition";
-import handlePieceMove from "../../helpers/moveValidation";
-import usePointsStore from "../../store/usePointsStore";
+import attackedSquares from "../../helpers/attackedSquares";
 import {
   canCheckBeBlocked,
   isChecked,
   isCheckmated,
 } from "../../helpers/checkmate/isCheckOrMate";
-import attackedSquares from "../../helpers/attackedSquares";
+import { calculateBestMoveRoot } from "../../helpers/evaluation/scoreEvaluation";
+import handlePieceMove from "../../helpers/moveValidation";
+import useGameStore from "../../store/useGameStore";
+import usePointsStore from "../../store/usePointsStore";
 
 function ChessboardBase() {
   const [currentBoardPositions, setCurrentBoardPositions] =
@@ -25,14 +27,15 @@ function ChessboardBase() {
   const addPointsForBlack = usePointsStore(
     (state) => state.increaseBlackPoints,
   );
-  const [colorToMove, setColorToMove] = useState<"w" | "b">("w");
-  const [allMovesOnBoard, setAllMovesOnBoard] = useState(
-    generateAllMovesFromPosition(currentBoardPositions),
+  const [updateIsCheckmate] = useGameStore(
+    useShallow((state) => [state.updateIsCheck, state.updateIsCheckmate]),
   );
+  const [colorToMove, setColorToMove] = useState<"w" | "b">("w");
 
   useEffect(() => {
-    if (colorToMove === "b")
-      setAllMovesOnBoard(generateAllMovesFromPosition(currentBoardPositions));
+    if (colorToMove === "b") {
+      calculateBestMoveRoot(2, currentBoardPositions);
+    }
   }, [colorToMove, currentBoardPositions]);
 
   const handleColorToMoveChange = () =>
@@ -45,11 +48,13 @@ function ChessboardBase() {
     );
     let canBeBlocked: Square[] = [];
     const checked = isChecked(colorToMove, kingPositions, allAttackedSquares);
+
     if (checked) {
       canBeBlocked = canCheckBeBlocked(colorToMove, currentBoardPositions);
       if (canBeBlocked.length && !canBeBlocked.includes(source)) return false;
     }
     if (piece[0] !== colorToMove) return false;
+
     if (
       isCheckmated(
         kingPositions,
@@ -58,8 +63,10 @@ function ChessboardBase() {
         canBeBlocked,
         currentBoardPositions,
       )
-    )
+    ) {
+      updateIsCheckmate();
       return false;
+    }
 
     const isValidMove = handlePieceMove(
       piece,
@@ -75,7 +82,7 @@ function ChessboardBase() {
 
     return isValidMove;
   };
-  console.log(allMovesOnBoard);
+
   return (
     <div className="w-1/3">
       <Chessboard

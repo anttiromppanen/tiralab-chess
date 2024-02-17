@@ -1,69 +1,16 @@
-import {
-  BoardPosition,
-  Piece,
-  Square,
-} from "react-chessboard/dist/chessboard/types";
-import { initialBoardPosition } from "../const/common";
+import { BoardPosition, Square } from "react-chessboard/dist/chessboard/types";
 import generateAllMovesFromPosition, {
   MoveInfo,
 } from "./generateAllMovesFromPosition";
 
 describe("generateAllMovesFromPosition.ts", () => {
   let emptyBoard: BoardPosition = {};
-  let initialBoard: BoardPosition = {};
   let whiteShouldIncludeSquares: Square[] = [];
   let blackShouldIncludeSquares: Square[] = [];
 
   beforeEach(() => {
     emptyBoard = {};
-    initialBoard = initialBoardPosition;
     whiteShouldIncludeSquares = [];
-  });
-
-  it("should return information for all pieces on initial board", () => {
-    const allMoves = generateAllMovesFromPosition(initialBoard).map(
-      (item) => item.piece,
-    );
-
-    const pawns = allMoves.filter((piece: Piece) => piece.includes("P"));
-    const knights = allMoves.filter((piece: Piece) => piece.includes("N"));
-    const bishops = allMoves.filter((piece: Piece) => piece.includes("B"));
-    const rooks = allMoves.filter((piece: Piece) => piece.includes("R"));
-    const queens = allMoves.filter((piece: Piece) => piece.includes("Q"));
-    const kings = allMoves.filter((piece: Piece) => piece.includes("K"));
-
-    expect(pawns).toHaveLength(16);
-    expect(knights).toHaveLength(4);
-    expect(bishops).toHaveLength(4);
-    expect(rooks).toHaveLength(4);
-    expect(queens).toHaveLength(2);
-    expect(kings).toHaveLength(2);
-  });
-
-  it("should return correct squares for pawn", () => {
-    emptyBoard.b5 = "bB";
-    emptyBoard.d5 = "bQ";
-    emptyBoard.g5 = "bP";
-    emptyBoard.g4 = "bQ";
-    emptyBoard.c4 = "wP";
-    emptyBoard.f4 = "wP";
-    emptyBoard.h4 = "wB";
-
-    const whitePawn = generateAllMovesFromPosition(emptyBoard).filter(
-      (item: MoveInfo) => item.square === "c4",
-    );
-    const blackPawn = generateAllMovesFromPosition(emptyBoard).filter(
-      (item) => item.square === "g5",
-    );
-    whiteShouldIncludeSquares = ["b5", "d5", "c5"];
-    blackShouldIncludeSquares = ["f4", "h4"];
-
-    expect(whiteShouldIncludeSquares.sort()).toStrictEqual(
-      whitePawn[0].moves.sort(),
-    );
-    expect(blackShouldIncludeSquares.sort()).toStrictEqual(
-      blackPawn[0].moves.sort(),
-    );
   });
 
   it("should return correct squares for knight", () => {

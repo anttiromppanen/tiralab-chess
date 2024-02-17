@@ -36,11 +36,13 @@ const generateAllMovesFromPosition = (currentBoard: BoardPosition) => {
             value,
             currentBoard,
           );
-          allMovesOnBoardTable.push({
-            square: key as Square,
-            piece: value as Piece,
-            moves: pawnMoves,
-          });
+          if (pawnMoves.length) {
+            allMovesOnBoardTable.push({
+              square: key as Square,
+              piece: value as Piece,
+              moves: pawnMoves,
+            });
+          }
           break;
         case "N":
           knightMoves = validKnightMovesFromSquare(
@@ -48,11 +50,13 @@ const generateAllMovesFromPosition = (currentBoard: BoardPosition) => {
             value,
             currentBoard,
           );
-          allMovesOnBoardTable.push({
-            square: key as Square,
-            piece: value as Piece,
-            moves: knightMoves,
-          });
+          if (knightMoves.length) {
+            allMovesOnBoardTable.push({
+              square: key as Square,
+              piece: value as Piece,
+              moves: knightMoves,
+            });
+          }
           break;
         case "B":
           bishopMoves = validBishopMovesFromSquare(
@@ -60,11 +64,13 @@ const generateAllMovesFromPosition = (currentBoard: BoardPosition) => {
             value,
             currentBoard,
           );
-          allMovesOnBoardTable.push({
-            square: key as Square,
-            piece: value as Piece,
-            moves: bishopMoves,
-          });
+          if (bishopMoves.length) {
+            allMovesOnBoardTable.push({
+              square: key as Square,
+              piece: value as Piece,
+              moves: bishopMoves,
+            });
+          }
           break;
         case "R":
           rookMoves = validRookMovesFromSquare(
@@ -72,11 +78,13 @@ const generateAllMovesFromPosition = (currentBoard: BoardPosition) => {
             value,
             currentBoard,
           );
-          allMovesOnBoardTable.push({
-            square: key as Square,
-            piece: value as Piece,
-            moves: rookMoves,
-          });
+          if (rookMoves.length) {
+            allMovesOnBoardTable.push({
+              square: key as Square,
+              piece: value as Piece,
+              moves: rookMoves,
+            });
+          }
           break;
         case "Q":
           queenMoves = validQueenMovesFromSquare(
@@ -84,11 +92,13 @@ const generateAllMovesFromPosition = (currentBoard: BoardPosition) => {
             value,
             currentBoard,
           );
-          allMovesOnBoardTable.push({
-            square: key as Square,
-            piece: value as Piece,
-            moves: queenMoves,
-          });
+          if (queenMoves.length) {
+            allMovesOnBoardTable.push({
+              square: key as Square,
+              piece: value as Piece,
+              moves: queenMoves,
+            });
+          }
           break;
         case "K":
           kingMoves = validKingMovesFromSquare(
@@ -96,11 +106,13 @@ const generateAllMovesFromPosition = (currentBoard: BoardPosition) => {
             value,
             currentBoard,
           );
-          allMovesOnBoardTable.push({
-            square: key as Square,
-            piece: value as Piece,
-            moves: kingMoves,
-          });
+          if (kingMoves.length) {
+            allMovesOnBoardTable.push({
+              square: key as Square,
+              piece: value as Piece,
+              moves: kingMoves,
+            });
+          }
           break;
         default:
           break;

@@ -1,21 +1,21 @@
 import { create } from "zustand";
 
-interface PointsState {
+interface GameState {
   score: number;
   isCheck: boolean;
   isCheckmate: boolean;
 }
 
-interface PointsActions {
+interface GameActions {
   updateScore: (amount: number) => void;
   updateIsCheck: () => void;
   updateIsCheckmate: () => void;
   resetScore: () => void;
 }
 
-export interface PointsStore extends PointsState, PointsActions {}
+export interface GameStore extends GameState, GameActions {}
 
-const usePointsStore = create<PointsStore>((set) => ({
+const useGameStore = create<GameStore>((set) => ({
   score: 0,
   isCheck: false,
   isCheckmate: false,
@@ -27,4 +27,4 @@ const usePointsStore = create<PointsStore>((set) => ({
   resetScore: () => set({ score: 0 }),
 }));
 
-export default usePointsStore;
+export default useGameStore;

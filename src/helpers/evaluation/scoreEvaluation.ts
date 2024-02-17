@@ -1,5 +1,6 @@
 import { BoardPosition, Piece } from "react-chessboard/dist/chessboard/types";
 import { isPieceWhite } from "../common";
+import generateAllMovesFromPosition from "../generateAllMovesFromPosition";
 
 const pawnValue = 100;
 const knightValue = 310;
@@ -82,7 +83,7 @@ const queenValue = 900;
 // };
 
 const getScoreForPiece = (piece: Piece) => {
-  const pieceValue = piece[1];
+  const pieceValue = piece && piece[1];
   switch (pieceValue) {
     case "P":
       return pawnValue;
@@ -104,11 +105,71 @@ const scoreEvaluation = (currentBoard: BoardPosition) => {
   let blackScore = 0;
   const pieces = Object.values(currentBoard);
   pieces.forEach((piece) => {
+    if (piece === undefined) return;
     if (isPieceWhite(piece)) whiteScore += getScoreForPiece(piece);
     else blackScore += getScoreForPiece(piece);
   });
 
   return blackScore - whiteScore;
+};
+
+export const calculateBestMove = (
+  depth: number,
+  currentBoard: BoardPosition,
+) => {
+  if (depth <= 0) return scoreEvaluation(currentBoard);
+  const newGameMoves = generateAllMovesFromPosition(currentBoard);
+
+  // generateAllMovesFromPosition change structure to this form
+  const movesArray = newGameMoves.flatMap(({ square, piece, moves }) =>
+    moves.map((move) => ({ square, piece, move })),
+  );
+
+  let bestMove = -Infinity;
+
+  movesArray.forEach(({ square, piece, move }) => {
+    const newBoard = { ...currentBoard };
+    newBoard[square] = undefined;
+    newBoard[move] = piece;
+    bestMove = Math.max(bestMove, calculateBestMove(depth - 1, newBoard));
+    newBoard[square] = currentBoard[square];
+    newBoard[move] = currentBoard[move];
+  });
+
+  return bestMove;
+};
+
+export const calculateBestMoveRoot = (
+  depth: number,
+  currentBoard: BoardPosition,
+) => {
+  const newGameMoves = generateAllMovesFromPosition(currentBoard);
+  let bestMove = -Infinity;
+  let bestMoveFound;
+  let bestPiece;
+
+  // generateAllMovesFromPosition change structure to this form
+  const movesArray = newGameMoves.flatMap(({ square, piece, moves }) =>
+    moves.map((move) => ({ square, piece, move })),
+  );
+
+  movesArray.forEach(({ square, piece, move }) => {
+    const newBoard = { ...currentBoard };
+    newBoard[square] = undefined;
+    newBoard[move] = piece;
+    const value = calculateBestMove(depth - 1, newBoard);
+
+    newBoard[square] = currentBoard[square];
+    newBoard[move] = currentBoard[move];
+
+    if (value >= bestMove) {
+      bestMove = value;
+      bestMoveFound = move;
+      bestPiece = piece;
+    }
+  });
+  console.log(bestMoveFound, bestPiece);
+  return bestMoveFound;
 };
 
 export default scoreEvaluation;

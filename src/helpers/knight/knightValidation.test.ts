@@ -16,7 +16,7 @@ describe("knightValidation.ts", () => {
         expect(correctSquares.sort()).toEqual(result.sort());
       });
 
-      it.only("should return correct move squares for g1", () => {
+      it("should return correct move squares for g1", () => {
         const correctSquares = ["f3", "h3"];
         const result = validKnightMovesFromSquare("g1", "wK", board);
         expect(correctSquares.sort()).toEqual(result.sort());
