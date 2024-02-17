@@ -1,5 +1,5 @@
 import { BoardPosition, Square } from "react-chessboard/dist/chessboard/types";
-import { horizontalBoard } from "../../const/common";
+import { horizontalBoardByLetter } from "../../const/common";
 import {
   generateMovesDownwards,
   generateMovesLeft,
@@ -50,7 +50,7 @@ describe("rookValidation.ts", () => {
 
       it("should contain correct squares left", () => {
         shouldContainSquares = ["e6", "d6", "c6", "b6", "a6"];
-        const sourceColumnLetterIndex = horizontalBoard.indexOf("f");
+        const sourceColumnLetterIndex = horizontalBoardByLetter.f;
         generateMovesLeft(
           "wR",
           sourceColumnLetterIndex,
@@ -66,7 +66,7 @@ describe("rookValidation.ts", () => {
 
       it("should contain correct squares right", () => {
         shouldContainSquares = ["c6", "d6", "e6", "f6", "g6", "h6"];
-        const sourceColumnLetterIndex = horizontalBoard.indexOf("b");
+        const sourceColumnLetterIndex = horizontalBoardByLetter.b;
         generateMovesRight(
           "wR",
           sourceColumnLetterIndex,
@@ -92,7 +92,7 @@ describe("rookValidation.ts", () => {
       });
 
       it("should return empty list on board left edge", () => {
-        const sourceColumnLetterIndex = horizontalBoard.indexOf("a");
+        const sourceColumnLetterIndex = horizontalBoardByLetter.a;
         generateMovesLeft(
           "bR",
           sourceColumnLetterIndex,
@@ -104,7 +104,7 @@ describe("rookValidation.ts", () => {
       });
 
       it("should return empty list on board right edge", () => {
-        const sourceColumnLetterIndex = horizontalBoard.indexOf("h");
+        const sourceColumnLetterIndex = horizontalBoardByLetter.h;
         generateMovesRight(
           "bR",
           sourceColumnLetterIndex,
@@ -155,8 +155,8 @@ describe("rookValidation.ts", () => {
         emptyBoard.c7 = "wP";
         whiteShouldContainSquares = ["e3", "d3", "c3", "b3"];
         blackShouldContainSquares = ["c7"];
-        const whiteSourceColumnLetterIndex = horizontalBoard.indexOf("f");
-        const blackSourceColumnLetterIndex = horizontalBoard.indexOf("d");
+        const whiteSourceColumnLetterIndex = horizontalBoardByLetter.f;
+        const blackSourceColumnLetterIndex = horizontalBoardByLetter.d;
 
         generateMovesLeft(
           "wR",
@@ -186,8 +186,8 @@ describe("rookValidation.ts", () => {
         emptyBoard.h5 = "wB";
         whiteShouldContainSquares = ["b1", "c1", "d1", "e1", "f1", "g1"];
         blackShouldContainSquares = ["e5", "f5", "g5", "h5"];
-        const whiteSourceColumnLetterIndex = horizontalBoard.indexOf("a");
-        const blackSourceColumnLetterIndex = horizontalBoard.indexOf("d");
+        const whiteSourceColumnLetterIndex = horizontalBoardByLetter.a;
+        const blackSourceColumnLetterIndex = horizontalBoardByLetter.d;
 
         generateMovesRight(
           "wR",
@@ -253,8 +253,8 @@ describe("rookValidation.ts", () => {
         emptyBoard.b5 = "wP";
         whiteShouldContainSquares = ["d5", "c5"];
         blackShouldContainSquares = ["b2", "c2", "d2", "e2", "f2"];
-        const whiteSourceColumnLetterIndex = horizontalBoard.indexOf("e");
-        const blackSourceColumnLetterIndex = horizontalBoard.indexOf("g");
+        const whiteSourceColumnLetterIndex = horizontalBoardByLetter.e;
+        const blackSourceColumnLetterIndex = horizontalBoardByLetter.g;
 
         generateMovesLeft(
           "wR",
@@ -285,8 +285,8 @@ describe("rookValidation.ts", () => {
         emptyBoard.e6 = "wP";
         whiteShouldContainSquares = ["c6", "d6"];
         blackShouldContainSquares = ["c1", "d1", "e1"];
-        const whiteSourceColumnLetterIndex = horizontalBoard.indexOf("b");
-        const blackSourceColumnLetterIndex = horizontalBoard.indexOf("b");
+        const whiteSourceColumnLetterIndex = horizontalBoardByLetter.b;
+        const blackSourceColumnLetterIndex = horizontalBoardByLetter.b;
 
         generateMovesRight(
           "wR",

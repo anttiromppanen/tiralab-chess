@@ -3,8 +3,16 @@ import {
   Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
-import { isPieceWhite, isValidSquare } from "../common";
-import { pieceValues, horizontalBoard } from "../../const/common";
+import {
+  horizontalBoardByIndex,
+  horizontalBoardByLetter,
+  pieceValues,
+} from "../../const/common";
+import {
+  getRowAndColumnFromSquare,
+  isPieceWhite,
+  isValidSquare,
+} from "../common";
 
 // 1 means up on y-axis
 export const validRowDirectionForWhite = (
@@ -42,10 +50,10 @@ export const canPawnCapture = (
   targetSquare: Square,
   piece: Piece,
 ) => {
-  const currentColumn = horizontalBoard.indexOf(sourceSquare[0]);
+  const currentColumn = horizontalBoardByLetter[sourceSquare[0]];
   const currentRow = Number(sourceSquare[1]);
 
-  const targetColumn = horizontalBoard.indexOf(targetSquare[0]);
+  const targetColumn = horizontalBoardByLetter[targetSquare[0]];
   const targetRow = Number(targetSquare[1]);
 
   const isAdjacentColumn = Math.abs(currentColumn - targetColumn) === 1;
@@ -131,20 +139,21 @@ export const isKingAttackedByPawn = (
   currentKingPosition: Square,
 ) => {
   const attackedSquares: Square[] = [];
-  const columnLetter = source[0];
-  const columnLetterIndex = horizontalBoard.indexOf(columnLetter);
-  const rowNumber = Number(source[1]);
+  const {
+    currentColumnLetterIndex: columnLetterIndex,
+    currentRowNumber: rowNumber,
+  } = getRowAndColumnFromSquare(source);
 
-  const upLeftSquare = `${horizontalBoard[columnLetterIndex - 1]}${
+  const upLeftSquare = `${horizontalBoardByIndex[columnLetterIndex - 1]}${
     rowNumber + 1
   }` as Square;
-  const upRightSquare = `${horizontalBoard[columnLetterIndex + 1]}${
+  const upRightSquare = `${horizontalBoardByIndex[columnLetterIndex + 1]}${
     rowNumber + 1
   }` as Square;
-  const downLeftSquare = `${horizontalBoard[columnLetterIndex - 1]}${
+  const downLeftSquare = `${horizontalBoardByIndex[columnLetterIndex - 1]}${
     rowNumber - 1
   }` as Square;
-  const downRightSquare = `${horizontalBoard[columnLetterIndex + 1]}${
+  const downRightSquare = `${horizontalBoardByIndex[columnLetterIndex + 1]}${
     rowNumber - 1
   }` as Square;
 
@@ -177,20 +186,21 @@ export const allAttackedSquaresByPawn = (
   attackedSquares: Record<Square, boolean>,
 ) => {
   const newAttackedSquares = attackedSquares;
-  const columnLetter = source[0];
-  const columnLetterIndex = horizontalBoard.indexOf(columnLetter);
-  const rowNumber = Number(source[1]);
+  const {
+    currentColumnLetterIndex: columnLetterIndex,
+    currentRowNumber: rowNumber,
+  } = getRowAndColumnFromSquare(source);
 
-  const upLeftSquare = `${horizontalBoard[columnLetterIndex - 1]}${
+  const upLeftSquare = `${horizontalBoardByIndex[columnLetterIndex - 1]}${
     rowNumber + 1
   }` as Square;
-  const upRightSquare = `${horizontalBoard[columnLetterIndex + 1]}${
+  const upRightSquare = `${horizontalBoardByIndex[columnLetterIndex + 1]}${
     rowNumber + 1
   }` as Square;
-  const downLeftSquare = `${horizontalBoard[columnLetterIndex - 1]}${
+  const downLeftSquare = `${horizontalBoardByIndex[columnLetterIndex - 1]}${
     rowNumber - 1
   }` as Square;
-  const downRightSquare = `${horizontalBoard[columnLetterIndex + 1]}${
+  const downRightSquare = `${horizontalBoardByIndex[columnLetterIndex + 1]}${
     rowNumber - 1
   }` as Square;
 
@@ -215,23 +225,25 @@ export const validPawnMovesFromSquare = (
   currentBoard: BoardPosition,
 ) => {
   const validPawnMoves: Square[] = [];
-  const columnLetter = source[0];
-  const columnLetterIndex = horizontalBoard.indexOf(columnLetter);
-  const rowNumber = Number(source[1]);
+  const {
+    currentColumnLetter: columnLetter,
+    currentColumnLetterIndex: columnLetterIndex,
+    currentRowNumber: rowNumber,
+  } = getRowAndColumnFromSquare(source);
 
   // all directions for pawn
   const straightUpSquare = `${columnLetter}${rowNumber + 1}` as Square;
-  const upLeftSquare = `${horizontalBoard[columnLetterIndex - 1]}${
+  const upLeftSquare = `${horizontalBoardByIndex[columnLetterIndex - 1]}${
     rowNumber + 1
   }` as Square;
-  const upRightSquare = `${horizontalBoard[columnLetterIndex + 1]}${
+  const upRightSquare = `${horizontalBoardByIndex[columnLetterIndex + 1]}${
     rowNumber + 1
   }` as Square;
   const straightDownSquare = `${columnLetter}${rowNumber - 1}` as Square;
-  const downLeftSquare = `${horizontalBoard[columnLetterIndex - 1]}${
+  const downLeftSquare = `${horizontalBoardByIndex[columnLetterIndex - 1]}${
     rowNumber - 1
   }` as Square;
-  const downRightSquare = `${horizontalBoard[columnLetterIndex + 1]}${
+  const downRightSquare = `${horizontalBoardByIndex[columnLetterIndex + 1]}${
     rowNumber - 1
   }` as Square;
 

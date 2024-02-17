@@ -3,7 +3,7 @@ import {
   Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
-import { horizontalBoard } from "../../const/common";
+import { getRowAndColumnFromSquare } from "../common";
 import {
   generateMovesDiagonally,
   generateMovesDownwards,
@@ -24,9 +24,8 @@ const generateValidQueenMoves = (
   validQueenMoves: Square[],
   includeBlockedSquares = false,
 ) => {
-  const currentColumnLetter = source[0];
-  const currentColumnLetterIndex = horizontalBoard.indexOf(currentColumnLetter);
-  const currentRowNumber = Number(source[1]);
+  const { currentColumnLetter, currentColumnLetterIndex, currentRowNumber } =
+    getRowAndColumnFromSquare(source);
   const maxColumns = 7;
   const maxRows = 8;
 
@@ -69,9 +68,8 @@ export const isKingAttackedByQueen = (
   currentBoard: BoardPosition,
 ) => {
   let queenMoves: Square[] = [];
-  const currentColumnLetter = source[0];
-  const currentColumnLetterIndex = horizontalBoard.indexOf(currentColumnLetter);
-  const currentRowNumber = Number(source[1]);
+  const { currentColumnLetter, currentColumnLetterIndex, currentRowNumber } =
+    getRowAndColumnFromSquare(source);
   const maxColumns = 7;
   const maxRows = 8;
 

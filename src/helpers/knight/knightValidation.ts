@@ -3,8 +3,12 @@ import {
   Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
-import { arePiecesDifferentColor, isValidSquare } from "../common";
-import { horizontalBoard } from "../../const/common";
+import { horizontalBoardByIndex } from "../../const/common";
+import {
+  arePiecesDifferentColor,
+  getRowAndColumnFromSquare,
+  isValidSquare,
+} from "../common";
 
 interface KnightValidationProps {
   source: Square;
@@ -21,9 +25,8 @@ export const validKnightMovesFromSquare = (
   includeAllAttackedSquares = false,
 ) => {
   const validKnightMoves: Square[] = [];
-  const sourceRowLetter = source[0];
-  const sourceColumnNumber = Number(source[1]);
-  const sourceRowAsIndex = horizontalBoard.indexOf(sourceRowLetter);
+  const { currentColumnLetterIndex, currentRowNumber } =
+    getRowAndColumnFromSquare(source);
 
   const allMoves = [
     [-2, 1],
@@ -37,16 +40,11 @@ export const validKnightMovesFromSquare = (
   ];
 
   allMoves.forEach(([rowOffset, colOffset]) => {
-    const newRow = sourceRowAsIndex + rowOffset;
-    const newCol = sourceColumnNumber + colOffset;
+    const newRow = currentColumnLetterIndex + rowOffset;
+    const newCol = currentRowNumber + colOffset;
 
-    if (
-      newRow >= 0 &&
-      newRow < horizontalBoard.length &&
-      newCol >= 1 &&
-      newCol <= 8
-    ) {
-      const square = `${horizontalBoard[newRow]}${newCol}` as Square;
+    if (newRow >= 0 && newRow < 8 && newCol >= 1 && newCol <= 8) {
+      const square = `${horizontalBoardByIndex[newRow]}${newCol}` as Square;
       // push if square doesn't have same color piece in it
       if (includeAllAttackedSquares) validKnightMoves.push(square);
       else if (arePiecesDifferentColor(piece, square, currentBoard))
@@ -82,32 +80,33 @@ export const isKingAttackedByKnight = (
   currentKingPosition: Square,
 ) => {
   const attackedSquares: Square[] = [];
-  const columnLetter = source[0];
-  const columnLetterIndex = horizontalBoard.indexOf(columnLetter);
-  const rowNumber = Number(source[1]);
+  const {
+    currentColumnLetterIndex: columnLetterIndex,
+    currentRowNumber: rowNumber,
+  } = getRowAndColumnFromSquare(source);
 
-  const upLeftSquare1 = `${horizontalBoard[columnLetterIndex - 2]}${
+  const upLeftSquare1 = `${horizontalBoardByIndex[columnLetterIndex - 2]}${
     rowNumber + 1
   }` as Square;
-  const upLeftSquare2 = `${horizontalBoard[columnLetterIndex - 1]}${
+  const upLeftSquare2 = `${horizontalBoardByIndex[columnLetterIndex - 1]}${
     rowNumber + 2
   }` as Square;
-  const upRightSquare1 = `${horizontalBoard[columnLetterIndex + 1]}${
+  const upRightSquare1 = `${horizontalBoardByIndex[columnLetterIndex + 1]}${
     rowNumber + 2
   }` as Square;
-  const upRightSquare2 = `${horizontalBoard[columnLetterIndex + 2]}${
+  const upRightSquare2 = `${horizontalBoardByIndex[columnLetterIndex + 2]}${
     rowNumber + 1
   }` as Square;
-  const bottomRightSquare1 = `${horizontalBoard[columnLetterIndex + 2]}${
+  const bottomRightSquare1 = `${horizontalBoardByIndex[columnLetterIndex + 2]}${
     rowNumber - 1
   }` as Square;
-  const bottomRightSquare2 = `${horizontalBoard[columnLetterIndex + 1]}${
+  const bottomRightSquare2 = `${horizontalBoardByIndex[columnLetterIndex + 1]}${
     rowNumber - 2
   }` as Square;
-  const bottomLeftSquare1 = `${horizontalBoard[columnLetterIndex - 1]}${
+  const bottomLeftSquare1 = `${horizontalBoardByIndex[columnLetterIndex - 1]}${
     rowNumber - 2
   }` as Square;
-  const bottomLeftSquare2 = `${horizontalBoard[columnLetterIndex - 2]}${
+  const bottomLeftSquare2 = `${horizontalBoardByIndex[columnLetterIndex - 2]}${
     rowNumber - 1
   }` as Square;
 
@@ -144,32 +143,33 @@ export const allAttackedSquaresByKnight = (
   attackedSquares: Record<Square, boolean>,
 ) => {
   const newAttackedSquares = attackedSquares;
-  const columnLetter = source[0];
-  const columnLetterIndex = horizontalBoard.indexOf(columnLetter);
-  const rowNumber = Number(source[1]);
+  const {
+    currentColumnLetterIndex: columnLetterIndex,
+    currentRowNumber: rowNumber,
+  } = getRowAndColumnFromSquare(source);
 
-  const upLeftSquare1 = `${horizontalBoard[columnLetterIndex - 2]}${
+  const upLeftSquare1 = `${horizontalBoardByIndex[columnLetterIndex - 2]}${
     rowNumber + 1
   }` as Square;
-  const upLeftSquare2 = `${horizontalBoard[columnLetterIndex - 1]}${
+  const upLeftSquare2 = `${horizontalBoardByIndex[columnLetterIndex - 1]}${
     rowNumber + 2
   }` as Square;
-  const upRightSquare1 = `${horizontalBoard[columnLetterIndex + 1]}${
+  const upRightSquare1 = `${horizontalBoardByIndex[columnLetterIndex + 1]}${
     rowNumber + 2
   }` as Square;
-  const upRightSquare2 = `${horizontalBoard[columnLetterIndex + 2]}${
+  const upRightSquare2 = `${horizontalBoardByIndex[columnLetterIndex + 2]}${
     rowNumber + 1
   }` as Square;
-  const bottomRightSquare1 = `${horizontalBoard[columnLetterIndex + 2]}${
+  const bottomRightSquare1 = `${horizontalBoardByIndex[columnLetterIndex + 2]}${
     rowNumber - 1
   }` as Square;
-  const bottomRightSquare2 = `${horizontalBoard[columnLetterIndex + 1]}${
+  const bottomRightSquare2 = `${horizontalBoardByIndex[columnLetterIndex + 1]}${
     rowNumber - 2
   }` as Square;
-  const bottomLeftSquare1 = `${horizontalBoard[columnLetterIndex - 1]}${
+  const bottomLeftSquare1 = `${horizontalBoardByIndex[columnLetterIndex - 1]}${
     rowNumber - 2
   }` as Square;
-  const bottomLeftSquare2 = `${horizontalBoard[columnLetterIndex - 2]}${
+  const bottomLeftSquare2 = `${horizontalBoardByIndex[columnLetterIndex - 2]}${
     rowNumber - 1
   }` as Square;
 

@@ -3,6 +3,7 @@ import {
   Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
+import { horizontalBoardByLetter } from "../const/common";
 
 export const isPieceWhite = (piece: Piece) => piece[0] === "w";
 
@@ -22,3 +23,11 @@ export const isValidSquare = (columnLetterIndex: number, rowNumber: number) =>
   columnLetterIndex <= 7 &&
   rowNumber >= 1 &&
   rowNumber <= 8;
+
+export const getRowAndColumnFromSquare = (square: Square) => {
+  const currentColumnLetter = square && square[0];
+  const currentColumnLetterIndex = horizontalBoardByLetter[currentColumnLetter];
+  const currentRowNumber = square && Number(square[1]);
+
+  return { currentColumnLetter, currentColumnLetterIndex, currentRowNumber };
+};

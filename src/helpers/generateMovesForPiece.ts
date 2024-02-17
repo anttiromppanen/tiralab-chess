@@ -3,7 +3,7 @@ import {
   Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
-import { horizontalBoard } from "../const/common";
+import { horizontalBoardByIndex } from "../const/common";
 import { arePiecesDifferentColor } from "./common";
 
 export const generateMovesLeftTop = (
@@ -16,7 +16,7 @@ export const generateMovesLeftTop = (
   includeBlockedSquares: boolean = false,
 ) => {
   for (let i = 1; columnIndex - i >= 0 && rowIndex + i <= maxRows; i += 1) {
-    const squareToAdd = `${horizontalBoard[columnIndex - i]}${
+    const squareToAdd = `${horizontalBoardByIndex[columnIndex - i]}${
       rowIndex + i
     }` as Square;
 
@@ -50,7 +50,7 @@ export const generateMovesRightTop = (
     columnIndex + i <= maxColumns && rowIndex + i <= maxRows;
     i += 1
   ) {
-    const squareToAdd = `${horizontalBoard[columnIndex + i]}${
+    const squareToAdd = `${horizontalBoardByIndex[columnIndex + i]}${
       rowIndex + i
     }` as Square;
 
@@ -78,7 +78,7 @@ export const generateMovesLeftBottom = (
   includeBlockedSquares: boolean = false,
 ) => {
   for (let i = 1; columnIndex - i >= 0 && rowIndex - i >= 1; i += 1) {
-    const squareToAdd = `${horizontalBoard[columnIndex - i]}${
+    const squareToAdd = `${horizontalBoardByIndex[columnIndex - i]}${
       rowIndex - i
     }` as Square;
 
@@ -107,7 +107,7 @@ export const generateMovesRightBottom = (
   includeBlockedSquares: boolean = false,
 ) => {
   for (let i = 1; columnIndex + i <= maxColumns && rowIndex - i >= 1; i += 1) {
-    const squareToAdd = `${horizontalBoard[columnIndex + i]}${
+    const squareToAdd = `${horizontalBoardByIndex[columnIndex + i]}${
       rowIndex - i
     }` as Square;
 
@@ -184,7 +184,8 @@ export const generateMovesLeft = (
   includeBlockedSquares: boolean = false,
 ) => {
   for (let i = sourceColumnLetterIndex - 1; i >= 0; i -= 1) {
-    const squareToAdd = `${horizontalBoard[i]}${sourceRowNumber}` as Square;
+    const squareToAdd =
+      `${horizontalBoardByIndex[i]}${sourceRowNumber}` as Square;
     if (currentBoard[squareToAdd]) {
       if (
         includeBlockedSquares &&
@@ -209,7 +210,8 @@ export const generateMovesRight = (
   includeBlockedSquares: boolean = false,
 ) => {
   for (let i = sourceColumnLetterIndex + 1; i <= maxColumns; i += 1) {
-    const squareToAdd = `${horizontalBoard[i]}${sourceRowNumber}` as Square;
+    const squareToAdd =
+      `${horizontalBoardByIndex[i]}${sourceRowNumber}` as Square;
     if (currentBoard[squareToAdd]) {
       if (
         includeBlockedSquares &&

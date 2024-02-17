@@ -3,7 +3,7 @@ import {
   Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
-import { horizontalBoard } from "../../const/common";
+import { getRowAndColumnFromSquare } from "../common";
 import {
   generateMovesLeftBottom,
   generateMovesLeftTop,
@@ -18,11 +18,8 @@ export const generateValidBishopMoves = (
   validBishopMoves: Square[],
   includeBlockedSquares = false,
 ) => {
-  const selectedSquareColumnLetter = source[0];
-  const selectedSquareColumnLetterIndex = horizontalBoard.indexOf(
-    selectedSquareColumnLetter,
-  );
-  const selectedSquareRowNumber = Number(source[1]);
+  const { currentColumnLetterIndex, currentRowNumber } =
+    getRowAndColumnFromSquare(source);
   // columns are stored in a 7-index array;
   const maxColumns = 7;
   const maxRows = 8;
@@ -30,8 +27,8 @@ export const generateValidBishopMoves = (
   generateMovesLeftTop(
     piece,
     currentBoard,
-    selectedSquareColumnLetterIndex,
-    selectedSquareRowNumber,
+    currentColumnLetterIndex,
+    currentRowNumber,
     maxRows,
     validBishopMoves,
     includeBlockedSquares,
@@ -40,8 +37,8 @@ export const generateValidBishopMoves = (
   generateMovesRightTop(
     piece,
     currentBoard,
-    selectedSquareColumnLetterIndex,
-    selectedSquareRowNumber,
+    currentColumnLetterIndex,
+    currentRowNumber,
     maxRows,
     maxColumns,
     validBishopMoves,
@@ -51,8 +48,8 @@ export const generateValidBishopMoves = (
   generateMovesLeftBottom(
     piece,
     currentBoard,
-    selectedSquareColumnLetterIndex,
-    selectedSquareRowNumber,
+    currentColumnLetterIndex,
+    currentRowNumber,
     validBishopMoves,
     includeBlockedSquares,
   );
@@ -60,8 +57,8 @@ export const generateValidBishopMoves = (
   generateMovesRightBottom(
     piece,
     currentBoard,
-    selectedSquareColumnLetterIndex,
-    selectedSquareRowNumber,
+    currentColumnLetterIndex,
+    currentRowNumber,
     maxColumns,
     validBishopMoves,
     includeBlockedSquares,
@@ -78,11 +75,8 @@ export const isKingAttackedByBishop = (
   const movesTopRight: Square[] = [];
   const movesBottomRight: Square[] = [];
   const movesBottomLeft: Square[] = [];
-  const selectedSquareColumnLetter = source[0];
-  const selectedSquareColumnLetterIndex = horizontalBoard.indexOf(
-    selectedSquareColumnLetter,
-  );
-  const selectedSquareRowNumber = Number(source[1]);
+  const { currentColumnLetterIndex, currentRowNumber } =
+    getRowAndColumnFromSquare(source);
   // columns are stored in a 7-index array;
   const maxColumns = 7;
   const maxRows = 8;
@@ -90,8 +84,8 @@ export const isKingAttackedByBishop = (
   generateMovesLeftTop(
     piece,
     currentBoard,
-    selectedSquareColumnLetterIndex,
-    selectedSquareRowNumber,
+    currentColumnLetterIndex,
+    currentRowNumber,
     maxRows,
     movesTopLeft,
     true,
@@ -102,8 +96,8 @@ export const isKingAttackedByBishop = (
   generateMovesRightTop(
     piece,
     currentBoard,
-    selectedSquareColumnLetterIndex,
-    selectedSquareRowNumber,
+    currentColumnLetterIndex,
+    currentRowNumber,
     maxRows,
     maxColumns,
     movesTopRight,
@@ -115,8 +109,8 @@ export const isKingAttackedByBishop = (
   generateMovesLeftBottom(
     piece,
     currentBoard,
-    selectedSquareColumnLetterIndex,
-    selectedSquareRowNumber,
+    currentColumnLetterIndex,
+    currentRowNumber,
     movesBottomLeft,
     true,
   );
@@ -126,8 +120,8 @@ export const isKingAttackedByBishop = (
   generateMovesRightBottom(
     piece,
     currentBoard,
-    selectedSquareColumnLetterIndex,
-    selectedSquareRowNumber,
+    currentColumnLetterIndex,
+    currentRowNumber,
     maxColumns,
     movesBottomRight,
     true,

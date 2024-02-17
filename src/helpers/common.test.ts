@@ -1,7 +1,6 @@
 import { Square } from "react-chessboard/dist/chessboard/types";
 import {
   blackPieceValues,
-  horizontalBoard,
   initialBoardPosition,
   whitePieceValues,
 } from "../const/common";
@@ -12,29 +11,6 @@ describe("helpers/common.ts", () => {
 
   beforeEach(() => {
     board = { ...initialBoardPosition };
-  });
-
-  describe("horizontalBoard", () => {
-    it("should return correct elements", () => {
-      const horizontalBoardTestVersion = [
-        "a",
-        "b",
-        "c",
-        "d",
-        "e",
-        "f",
-        "g",
-        "h",
-      ];
-      const horizontalBoardActualVersion = [...horizontalBoard];
-
-      expect(horizontalBoardTestVersion.sort()).toEqual(
-        horizontalBoardActualVersion.sort(),
-      );
-      expect(horizontalBoardTestVersion).toHaveLength(
-        horizontalBoardActualVersion.length,
-      );
-    });
   });
 
   describe("isPieceWhite", () => {

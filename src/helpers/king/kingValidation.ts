@@ -3,8 +3,8 @@ import {
   Piece,
   Square,
 } from "react-chessboard/dist/chessboard/types";
-import { horizontalBoard } from "../../const/common";
-import { arePiecesDifferentColor } from "../common";
+import { horizontalBoardByIndex } from "../../const/common";
+import { arePiecesDifferentColor, getRowAndColumnFromSquare } from "../common";
 
 export const generateValidKingMoves = (
   source: Square,
@@ -13,9 +13,8 @@ export const generateValidKingMoves = (
   includeBlockedSquares = false,
 ) => {
   let validKingMoves: Square[] = [];
-  const currentColumnLetter = source && source[0];
-  const currentColumnLetterIndex = horizontalBoard.indexOf(currentColumnLetter);
-  const currentRowNumber = source && Number(source[1]);
+  const { currentColumnLetterIndex, currentRowNumber } =
+    getRowAndColumnFromSquare(source);
   const maxColumns = 7;
   const maxRows = 8;
 
@@ -27,38 +26,38 @@ export const generateValidKingMoves = (
   const bottomLeft =
     validColumnDown &&
     validRowDown &&
-    `${horizontalBoard[currentColumnLetterIndex - 1]}${currentRowNumber - 1}`;
+    `${horizontalBoardByIndex[currentColumnLetterIndex - 1]}${currentRowNumber - 1}`;
 
   const left =
     validColumnDown &&
-    `${horizontalBoard[currentColumnLetterIndex - 1]}${currentRowNumber}`;
+    `${horizontalBoardByIndex[currentColumnLetterIndex - 1]}${currentRowNumber}`;
 
   const topLeft =
     validColumnDown &&
     validRowUp &&
-    `${horizontalBoard[currentColumnLetterIndex - 1]}${currentRowNumber + 1}`;
+    `${horizontalBoardByIndex[currentColumnLetterIndex - 1]}${currentRowNumber + 1}`;
 
   const top =
     validRowUp &&
-    `${horizontalBoard[currentColumnLetterIndex]}${currentRowNumber + 1}`;
+    `${horizontalBoardByIndex[currentColumnLetterIndex]}${currentRowNumber + 1}`;
 
   const topRight =
     validColumnUp &&
     validRowUp &&
-    `${horizontalBoard[currentColumnLetterIndex + 1]}${currentRowNumber + 1}`;
+    `${horizontalBoardByIndex[currentColumnLetterIndex + 1]}${currentRowNumber + 1}`;
 
   const right =
     validColumnUp &&
-    `${horizontalBoard[currentColumnLetterIndex + 1]}${currentRowNumber}`;
+    `${horizontalBoardByIndex[currentColumnLetterIndex + 1]}${currentRowNumber}`;
 
   const bottomRight =
     validColumnUp &&
     validRowDown &&
-    `${horizontalBoard[currentColumnLetterIndex + 1]}${currentRowNumber - 1}`;
+    `${horizontalBoardByIndex[currentColumnLetterIndex + 1]}${currentRowNumber - 1}`;
 
   const bottom =
     validRowDown &&
-    `${horizontalBoard[currentColumnLetterIndex]}${currentRowNumber - 1}`;
+    `${horizontalBoardByIndex[currentColumnLetterIndex]}${currentRowNumber - 1}`;
 
   // filter out false squares and squares that are blocked by same color piece
   validKingMoves = [
