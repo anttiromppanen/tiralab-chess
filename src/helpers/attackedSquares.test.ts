@@ -1,294 +1,186 @@
 import { BoardPosition } from "react-chessboard/dist/chessboard/types";
-import attackedSquares from "./attackedSquares";
+import {
+  AttackedSquaresItemType,
+  attackedSquaresAfterCheck,
+} from "./attackedSquares";
 
-describe("attackedSquares.ts", () => {
+describe("attackedSquaresAfterCheck.ts", () => {
   let emptyBoard: BoardPosition = {};
-  let expectedSquaresForWhite: Record<string, boolean> = {};
-  let expectedSquaresForBlack: Record<string, boolean> = {};
+  let expectedSquaresForWhite: AttackedSquaresItemType = [];
+  let expectedSquaresForBlack: AttackedSquaresItemType = [];
 
   beforeEach(() => {
     emptyBoard = {};
-    expectedSquaresForWhite = {};
-    expectedSquaresForBlack = {};
+    expectedSquaresForWhite = [];
+    expectedSquaresForBlack = [];
   });
 
   it("should return correct squares for pawns", () => {
     emptyBoard.b7 = "bP";
-    emptyBoard.d5 = "bP";
+    emptyBoard.a6 = "wK";
+    emptyBoard.g5 = "bK";
     emptyBoard.f4 = "wP";
-    emptyBoard.b3 = "wP";
 
-    const { allAttackedSquares: resultForWhite } = attackedSquares(
+    const { allAttackedSquares: resultForWhite } = attackedSquaresAfterCheck(
       "w",
       emptyBoard,
     );
-    const { allAttackedSquares: resultForBlack } = attackedSquares(
+    const { allAttackedSquares: resultForBlack } = attackedSquaresAfterCheck(
       "b",
       emptyBoard,
     );
 
-    expectedSquaresForWhite = {
-      a6: true,
-      c6: true,
-      c4: true,
-      e4: true,
-    };
-    expectedSquaresForBlack = {
-      a4: true,
-      c4: true,
-      e5: true,
-      g5: true,
-    };
+    expectedSquaresForWhite = [
+      { piece: "bP", source: "b7", attackedSquaresByPiece: ["a6", "b7"] },
+    ];
+    expectedSquaresForBlack = [
+      { piece: "wP", source: "f4", attackedSquaresByPiece: ["g5", "f4"] },
+    ];
 
-    expect(expectedSquaresForWhite).toStrictEqual(resultForWhite);
-    expect(expectedSquaresForBlack).toStrictEqual(resultForBlack);
+    expect(expectedSquaresForWhite).toStrictEqual(resultForWhite.a6);
+    expect(expectedSquaresForBlack).toStrictEqual(resultForBlack.g5);
   });
 
   it("should return correct squares for knights", () => {
+    emptyBoard.d8 = "wK";
     emptyBoard.c6 = "bN";
-    emptyBoard.b4 = "bP";
-    emptyBoard.d3 = "wN";
-    emptyBoard.f2 = "wP";
+    emptyBoard.e2 = "wN";
+    emptyBoard.g1 = "bK";
 
-    const { allAttackedSquares: resultForWhite } = attackedSquares(
+    const { allAttackedSquares: resultForWhite } = attackedSquaresAfterCheck(
       "w",
       emptyBoard,
     );
-    const { allAttackedSquares: resultForBlack } = attackedSquares(
+    const { allAttackedSquares: resultForBlack } = attackedSquaresAfterCheck(
       "b",
       emptyBoard,
     );
 
-    expectedSquaresForWhite = {
-      b4: true,
-      a5: true,
-      a7: true,
-      d8: true,
-      e7: true,
-      e5: true,
-      d4: true,
-      a3: true,
-      c3: true,
-      b8: true,
-    };
-    expectedSquaresForBlack = {
-      c1: true,
-      b2: true,
-      b4: true,
-      c5: true,
-      e5: true,
-      f4: true,
-      f2: true,
-      e1: true,
-      e3: true,
-      g3: true,
-    };
+    expectedSquaresForWhite = [
+      { piece: "bN", source: "c6", attackedSquaresByPiece: ["d8", "c6"] },
+    ];
+    expectedSquaresForBlack = [
+      { piece: "wN", source: "e2", attackedSquaresByPiece: ["g1", "e2"] },
+    ];
 
-    expect(expectedSquaresForWhite).toStrictEqual(resultForWhite);
-    expect(expectedSquaresForBlack).toStrictEqual(resultForBlack);
+    expect(expectedSquaresForWhite).toStrictEqual(resultForWhite.d8);
+    expect(expectedSquaresForBlack).toStrictEqual(resultForBlack.g1);
   });
 
   it("should return correct squares for bishops", () => {
     emptyBoard.c6 = "bB";
-    emptyBoard.d4 = "wP";
-    emptyBoard.e4 = "bP";
-    emptyBoard.c3 = "wB";
+    emptyBoard.a5 = "bK";
+    emptyBoard.e1 = "wB";
+    emptyBoard.h1 = "wK";
 
-    const { allAttackedSquares: resultForWhite } = attackedSquares(
+    const { allAttackedSquares: resultForWhite } = attackedSquaresAfterCheck(
       "w",
       emptyBoard,
     );
-    const { allAttackedSquares: resultForBlack } = attackedSquares(
+    const { allAttackedSquares: resultForBlack } = attackedSquaresAfterCheck(
       "b",
       emptyBoard,
     );
 
-    expectedSquaresForWhite = {
-      b7: true,
-      a8: true,
-      d7: true,
-      e8: true,
-      d5: true,
-      e4: true,
-      b5: true,
-      a4: true,
-      d3: true,
-      f3: true,
-    };
-    expectedSquaresForBlack = {
-      b4: true,
-      a5: true,
-      d4: true,
-      d2: true,
-      e1: true,
-      b2: true,
-      a1: true,
-      c5: true,
-      e5: true,
-    };
+    expectedSquaresForWhite = [
+      {
+        piece: "bB",
+        source: "c6",
+        attackedSquaresByPiece: ["d5", "e4", "f3", "g2", "h1", "c6"],
+      },
+    ];
+    expectedSquaresForBlack = [
+      {
+        piece: "wB",
+        source: "e1",
+        attackedSquaresByPiece: ["e1", "d2", "c3", "b4", "a5"],
+      },
+    ];
 
-    expect(expectedSquaresForWhite).toStrictEqual(resultForWhite);
-    expect(expectedSquaresForBlack).toStrictEqual(resultForBlack);
+    resultForWhite.h1[0].attackedSquaresByPiece.sort();
+    resultForBlack.a5[0].attackedSquaresByPiece.sort();
+    expectedSquaresForWhite[0].attackedSquaresByPiece.sort();
+    expectedSquaresForBlack[0].attackedSquaresByPiece.sort();
+
+    expect(expectedSquaresForWhite).toStrictEqual(resultForWhite.h1);
+    expect(expectedSquaresForBlack).toStrictEqual(resultForBlack.a5);
   });
 
   it("should return correct squares for rooks", () => {
+    emptyBoard.b8 = "bK";
+    emptyBoard.a7 = "wK";
     emptyBoard.f7 = "bR";
-    emptyBoard.f6 = "bP";
-    emptyBoard.b5 = "wP";
     emptyBoard.b2 = "wR";
 
-    const { allAttackedSquares: resultForWhite } = attackedSquares(
+    const { allAttackedSquares: resultForWhite } = attackedSquaresAfterCheck(
       "w",
       emptyBoard,
     );
-    const { allAttackedSquares: resultForBlack } = attackedSquares(
+    const { allAttackedSquares: resultForBlack } = attackedSquaresAfterCheck(
       "b",
       emptyBoard,
     );
 
-    expectedSquaresForWhite = {
-      f8: true,
-      g7: true,
-      h7: true,
-      f6: true,
-      e7: true,
-      d7: true,
-      c7: true,
-      b7: true,
-      a7: true,
-      e5: true,
-      g5: true,
-    };
-    expectedSquaresForBlack = {
-      b3: true,
-      b4: true,
-      b5: true,
-      c2: true,
-      d2: true,
-      e2: true,
-      f2: true,
-      g2: true,
-      h2: true,
-      b1: true,
-      a2: true,
-      a6: true,
-      c6: true,
-    };
+    expectedSquaresForWhite = [
+      {
+        piece: "bR",
+        source: "f7",
+        attackedSquaresByPiece: ["e7", "f7", "d7", "c7", "b7", "a7"],
+      },
+    ];
+    expectedSquaresForBlack = [
+      {
+        piece: "wR",
+        source: "b2",
+        attackedSquaresByPiece: ["b2", "b3", "b4", "b5", "b6", "b7", "b8"],
+      },
+    ];
 
-    expect(expectedSquaresForWhite).toStrictEqual(resultForWhite);
-    expect(expectedSquaresForBlack).toStrictEqual(resultForBlack);
+    resultForWhite.a7[0].attackedSquaresByPiece.sort();
+    resultForBlack.b8[0].attackedSquaresByPiece.sort();
+    expectedSquaresForWhite[0].attackedSquaresByPiece.sort();
+    expectedSquaresForBlack[0].attackedSquaresByPiece.sort();
+
+    expect(expectedSquaresForWhite).toStrictEqual(resultForWhite.a7);
+    expect(expectedSquaresForBlack).toStrictEqual(resultForBlack.b8);
   });
 
   it("should return correct squares for queens", () => {
+    emptyBoard.e7 = "bK";
     emptyBoard.f6 = "bQ";
     emptyBoard.b4 = "wQ";
-    emptyBoard.d4 = "wP";
-    emptyBoard.f4 = "bP";
+    emptyBoard.h4 = "wK";
 
-    const { allAttackedSquares: resultForWhite } = attackedSquares(
+    const { allAttackedSquares: resultForWhite } = attackedSquaresAfterCheck(
       "w",
       emptyBoard,
     );
-    const { allAttackedSquares: resultForBlack } = attackedSquares(
+    const { allAttackedSquares: resultForBlack } = attackedSquaresAfterCheck(
       "b",
       emptyBoard,
     );
 
-    expectedSquaresForWhite = {
-      f7: true,
-      f8: true,
-      g7: true,
-      h8: true,
-      g6: true,
-      h6: true,
-      g5: true,
-      h4: true,
-      f5: true,
-      f4: true,
-      e5: true,
-      d4: true,
-      e6: true,
-      d6: true,
-      c6: true,
-      b6: true,
-      a6: true,
-      e7: true,
-      d8: true,
-      e3: true,
-      g3: true,
-    };
-    expectedSquaresForBlack = {
-      b5: true,
-      b6: true,
-      b7: true,
-      b8: true,
-      c5: true,
-      d6: true,
-      e7: true,
-      f8: true,
-      c4: true,
-      d4: true,
-      b3: true,
-      b2: true,
-      b1: true,
-      a3: true,
-      a4: true,
-      a5: true,
-      e5: true,
-      c3: true,
-      d2: true,
-      e1: true,
-    };
+    expectedSquaresForWhite = [
+      {
+        piece: "bQ",
+        source: "f6",
+        attackedSquaresByPiece: ["g5", "f6", "h4"],
+      },
+    ];
+    expectedSquaresForBlack = [
+      {
+        piece: "wQ",
+        source: "b4",
+        attackedSquaresByPiece: ["c5", "d6", "b4", "e7"],
+      },
+    ];
 
-    expect(expectedSquaresForWhite).toStrictEqual(resultForWhite);
-    expect(expectedSquaresForBlack).toStrictEqual(resultForBlack);
-  });
+    resultForWhite.h4[0].attackedSquaresByPiece.sort();
+    resultForBlack.e7[0].attackedSquaresByPiece.sort();
+    expectedSquaresForWhite[0].attackedSquaresByPiece.sort();
+    expectedSquaresForBlack[0].attackedSquaresByPiece.sort();
 
-  it("should return correct squares for kings", () => {
-    emptyBoard.a3 = "bP";
-    emptyBoard.b4 = "wK";
-    emptyBoard.c4 = "wP";
-    emptyBoard.e4 = "bP";
-    emptyBoard.f3 = "bK";
-    emptyBoard.g3 = "wP";
-
-    const { allAttackedSquares: resultForWhite } = attackedSquares(
-      "w",
-      emptyBoard,
-    );
-    const { allAttackedSquares: resultForBlack } = attackedSquares(
-      "b",
-      emptyBoard,
-    );
-
-    expectedSquaresForWhite = {
-      e2: true,
-      e3: true,
-      e4: true,
-      f4: true,
-      g4: true,
-      g3: true,
-      g2: true,
-      f2: true,
-      b2: true,
-      d3: true,
-      f3: true,
-    };
-    expectedSquaresForBlack = {
-      a3: true,
-      a4: true,
-      a5: true,
-      b5: true,
-      c5: true,
-      c4: true,
-      c3: true,
-      b3: true,
-      d5: true,
-      f4: true,
-      h4: true,
-    };
-
-    expect(expectedSquaresForWhite).toStrictEqual(resultForWhite);
-    expect(expectedSquaresForBlack).toStrictEqual(resultForBlack);
+    expect(expectedSquaresForWhite).toStrictEqual(resultForWhite.h4);
+    expect(expectedSquaresForBlack).toStrictEqual(resultForBlack.e7);
   });
 });

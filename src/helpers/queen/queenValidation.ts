@@ -6,7 +6,14 @@ import {
 import { horizontalBoard } from "../../const/common";
 import {
   generateMovesDiagonally,
+  generateMovesDownwards,
   generateMovesHorizontally,
+  generateMovesLeft,
+  generateMovesLeftTop,
+  generateMovesRight,
+  generateMovesRightBottom,
+  generateMovesRightTop,
+  generateMovesUpwards,
   generateMovesVertically,
 } from "../generateMovesForPiece";
 
@@ -53,6 +60,124 @@ const generateValidQueenMoves = (
     validQueenMoves,
     includeBlockedSquares,
   );
+};
+
+export const isKingAttackedByQueen = (
+  piece: Piece,
+  source: Square,
+  currentKingPosition: Square,
+  currentBoard: BoardPosition,
+) => {
+  let queenMoves: Square[] = [];
+  const currentColumnLetter = source[0];
+  const currentColumnLetterIndex = horizontalBoard.indexOf(currentColumnLetter);
+  const currentRowNumber = Number(source[1]);
+  const maxColumns = 7;
+  const maxRows = 8;
+
+  generateMovesLeft(
+    piece,
+    currentColumnLetterIndex,
+    currentRowNumber,
+    queenMoves,
+    currentBoard,
+    true,
+  );
+
+  if (queenMoves.includes(currentKingPosition)) return queenMoves;
+  queenMoves = [];
+
+  generateMovesLeftTop(
+    piece,
+    currentBoard,
+    currentColumnLetterIndex,
+    currentRowNumber,
+    maxRows,
+    queenMoves,
+    true,
+  );
+
+  if (queenMoves.includes(currentKingPosition)) return queenMoves;
+  queenMoves = [];
+
+  generateMovesUpwards(
+    piece,
+    currentColumnLetter,
+    currentRowNumber,
+    maxRows,
+    queenMoves,
+    currentBoard,
+    true,
+  );
+
+  if (queenMoves.includes(currentKingPosition)) return queenMoves;
+  queenMoves = [];
+
+  generateMovesRightTop(
+    piece,
+    currentBoard,
+    currentColumnLetterIndex,
+    currentRowNumber,
+    maxRows,
+    maxColumns,
+    queenMoves,
+    true,
+  );
+
+  if (queenMoves.includes(currentKingPosition)) return queenMoves;
+  queenMoves = [];
+
+  generateMovesRight(
+    piece,
+    currentColumnLetterIndex,
+    currentRowNumber,
+    maxColumns,
+    queenMoves,
+    currentBoard,
+    true,
+  );
+
+  if (queenMoves.includes(currentKingPosition)) return queenMoves;
+  queenMoves = [];
+
+  generateMovesRightBottom(
+    piece,
+    currentBoard,
+    currentColumnLetterIndex,
+    currentRowNumber,
+    maxColumns,
+    queenMoves,
+    true,
+  );
+
+  if (queenMoves.includes(currentKingPosition)) return queenMoves;
+  queenMoves = [];
+
+  generateMovesDownwards(
+    piece,
+    currentColumnLetter,
+    currentRowNumber,
+    queenMoves,
+    currentBoard,
+    true,
+  );
+
+  if (queenMoves.includes(currentKingPosition)) return queenMoves;
+  queenMoves = [];
+
+  generateMovesRightBottom(
+    piece,
+    currentBoard,
+    currentColumnLetterIndex,
+    currentRowNumber,
+    maxColumns,
+    queenMoves,
+    true,
+  );
+
+  if (queenMoves.includes(currentKingPosition)) return queenMoves;
+
+  return [];
 };
 
 const validQueenMovesFromSquare = (

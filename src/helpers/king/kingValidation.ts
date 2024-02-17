@@ -13,9 +13,9 @@ export const generateValidKingMoves = (
   includeBlockedSquares = false,
 ) => {
   let validKingMoves: Square[] = [];
-  const currentColumnLetter = source[0];
+  const currentColumnLetter = source && source[0];
   const currentColumnLetterIndex = horizontalBoard.indexOf(currentColumnLetter);
-  const currentRowNumber = Number(source[1]);
+  const currentRowNumber = source && Number(source[1]);
   const maxColumns = 7;
   const maxRows = 8;
 

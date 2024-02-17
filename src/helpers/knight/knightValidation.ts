@@ -77,6 +77,68 @@ const validKnightMove = ({
   return false;
 };
 
+export const isKingAttackedByKnight = (
+  source: Square,
+  currentKingPosition: Square,
+) => {
+  const attackedSquares: Square[] = [];
+  const columnLetter = source[0];
+  const columnLetterIndex = horizontalBoard.indexOf(columnLetter);
+  const rowNumber = Number(source[1]);
+
+  const upLeftSquare1 = `${horizontalBoard[columnLetterIndex - 2]}${
+    rowNumber + 1
+  }` as Square;
+  const upLeftSquare2 = `${horizontalBoard[columnLetterIndex - 1]}${
+    rowNumber + 2
+  }` as Square;
+  const upRightSquare1 = `${horizontalBoard[columnLetterIndex + 1]}${
+    rowNumber + 2
+  }` as Square;
+  const upRightSquare2 = `${horizontalBoard[columnLetterIndex + 2]}${
+    rowNumber + 1
+  }` as Square;
+  const bottomRightSquare1 = `${horizontalBoard[columnLetterIndex + 2]}${
+    rowNumber - 1
+  }` as Square;
+  const bottomRightSquare2 = `${horizontalBoard[columnLetterIndex + 1]}${
+    rowNumber - 2
+  }` as Square;
+  const bottomLeftSquare1 = `${horizontalBoard[columnLetterIndex - 1]}${
+    rowNumber - 2
+  }` as Square;
+  const bottomLeftSquare2 = `${horizontalBoard[columnLetterIndex - 2]}${
+    rowNumber - 1
+  }` as Square;
+
+  if (isValidSquare(columnLetterIndex - 2, rowNumber + 1))
+    if (currentKingPosition === upLeftSquare1)
+      attackedSquares.push(upLeftSquare1);
+  if (isValidSquare(columnLetterIndex - 1, rowNumber + 2))
+    if (currentKingPosition === upLeftSquare2)
+      attackedSquares.push(upLeftSquare2);
+  if (isValidSquare(columnLetterIndex + 1, rowNumber + 2))
+    if (currentKingPosition === upRightSquare1)
+      attackedSquares.push(upRightSquare1);
+  if (isValidSquare(columnLetterIndex + 2, rowNumber + 1))
+    if (currentKingPosition === upRightSquare2)
+      attackedSquares.push(upRightSquare2);
+  if (isValidSquare(columnLetterIndex + 2, rowNumber - 1))
+    if (currentKingPosition === bottomRightSquare1)
+      attackedSquares.push(bottomRightSquare1);
+  if (isValidSquare(columnLetterIndex + 1, rowNumber - 2))
+    if (currentKingPosition === bottomRightSquare2)
+      attackedSquares.push(bottomRightSquare2);
+  if (isValidSquare(columnLetterIndex - 1, rowNumber - 2))
+    if (currentKingPosition === bottomLeftSquare1)
+      attackedSquares.push(bottomLeftSquare1);
+  if (isValidSquare(columnLetterIndex - 2, rowNumber - 1))
+    if (currentKingPosition === bottomLeftSquare2)
+      attackedSquares.push(bottomLeftSquare2);
+
+  return attackedSquares;
+};
+
 export const allAttackedSquaresByKnight = (
   source: Square,
   attackedSquares: Record<Square, boolean>,
@@ -128,7 +190,7 @@ export const allAttackedSquaresByKnight = (
   if (isValidSquare(columnLetterIndex - 2, rowNumber - 1))
     newAttackedSquares[bottomLeftSquare2] = true;
 
-  return newAttackedSquares;
+  return attackedSquares;
 };
 
 export default validKnightMove;

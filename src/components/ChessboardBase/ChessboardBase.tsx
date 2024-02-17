@@ -9,7 +9,12 @@ import { initialBoardPosition } from "../../const/common";
 import generateAllMovesFromPosition from "../../helpers/generateAllMovesFromPosition";
 import handlePieceMove from "../../helpers/moveValidation";
 import usePointsStore from "../../store/usePointsStore";
-import { isChecked, isCheckmated } from "../../helpers/checkmate/isCheckOrMate";
+import {
+  canCheckBeBlocked,
+  isChecked,
+  isCheckmated,
+} from "../../helpers/checkmate/isCheckOrMate";
+import attackedSquares from "../../helpers/attackedSquares";
 
 function ChessboardBase() {
   const [currentBoardPositions, setCurrentBoardPositions] =
@@ -34,10 +39,27 @@ function ChessboardBase() {
     setColorToMove((state) => (state === "w" ? "b" : "w"));
 
   const handlePieceDrop = (source: Square, target: Square, piece: Piece) => {
-    const { isKingAttacked } = isChecked(colorToMove, currentBoardPositions);
+    const { allAttackedSquares, kingPositions } = attackedSquares(
+      colorToMove,
+      currentBoardPositions,
+    );
+    let canBeBlocked: Square[] = [];
+    const checked = isChecked(colorToMove, kingPositions, allAttackedSquares);
+    if (checked) {
+      canBeBlocked = canCheckBeBlocked(colorToMove, currentBoardPositions);
+      if (canBeBlocked.length && !canBeBlocked.includes(source)) return false;
+    }
     if (piece[0] !== colorToMove) return false;
-    if (isCheckmated(colorToMove, currentBoardPositions)) return false;
-    if (isKingAttacked && piece[1] !== "K") return false;
+    if (
+      isCheckmated(
+        kingPositions,
+        colorToMove,
+        allAttackedSquares,
+        canBeBlocked,
+        currentBoardPositions,
+      )
+    )
+      return false;
 
     const isValidMove = handlePieceMove(
       piece,

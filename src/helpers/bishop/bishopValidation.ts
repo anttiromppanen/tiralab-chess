@@ -68,6 +68,75 @@ export const generateValidBishopMoves = (
   );
 };
 
+export const isKingAttackedByBishop = (
+  piece: Piece,
+  source: Square,
+  currentKingPosition: Square,
+  currentBoard: BoardPosition,
+) => {
+  const movesTopLeft: Square[] = [];
+  const movesTopRight: Square[] = [];
+  const movesBottomRight: Square[] = [];
+  const movesBottomLeft: Square[] = [];
+  const selectedSquareColumnLetter = source[0];
+  const selectedSquareColumnLetterIndex = horizontalBoard.indexOf(
+    selectedSquareColumnLetter,
+  );
+  const selectedSquareRowNumber = Number(source[1]);
+  // columns are stored in a 7-index array;
+  const maxColumns = 7;
+  const maxRows = 8;
+
+  generateMovesLeftTop(
+    piece,
+    currentBoard,
+    selectedSquareColumnLetterIndex,
+    selectedSquareRowNumber,
+    maxRows,
+    movesTopLeft,
+    true,
+  );
+
+  if (movesTopLeft.includes(currentKingPosition)) return movesTopLeft;
+
+  generateMovesRightTop(
+    piece,
+    currentBoard,
+    selectedSquareColumnLetterIndex,
+    selectedSquareRowNumber,
+    maxRows,
+    maxColumns,
+    movesTopRight,
+    true,
+  );
+
+  if (movesTopRight.includes(currentKingPosition)) return movesTopRight;
+
+  generateMovesLeftBottom(
+    piece,
+    currentBoard,
+    selectedSquareColumnLetterIndex,
+    selectedSquareRowNumber,
+    movesBottomLeft,
+    true,
+  );
+
+  if (movesBottomLeft.includes(currentKingPosition)) return movesBottomLeft;
+
+  generateMovesRightBottom(
+    piece,
+    currentBoard,
+    selectedSquareColumnLetterIndex,
+    selectedSquareRowNumber,
+    maxColumns,
+    movesBottomRight,
+    true,
+  );
+
+  if (movesBottomRight.includes(currentKingPosition)) return movesBottomRight;
+  return [];
+};
+
 export const validBishopMovesFromSquare = (
   source: Square,
   piece: Piece,

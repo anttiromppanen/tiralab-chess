@@ -63,6 +63,70 @@ export const generateValidRookMoves = (
   );
 };
 
+export const isKingAttackedByRook = (
+  piece: Piece,
+  source: Square,
+  currentKingPosition: Square,
+  currentBoard: BoardPosition,
+) => {
+  const movesTop: Square[] = [];
+  const movesRight: Square[] = [];
+  const movesBottom: Square[] = [];
+  const movesLeft: Square[] = [];
+  const currentColumnLetter = source[0];
+  const currentColumnLetterIndex = horizontalBoard.indexOf(currentColumnLetter);
+  const currentRowNumber = Number(source[1]);
+  const maxColumns = 7;
+  const maxRows = 8;
+
+  generateMovesUpwards(
+    piece,
+    currentColumnLetter,
+    currentRowNumber,
+    maxRows,
+    movesTop,
+    currentBoard,
+    true,
+  );
+
+  if (movesTop.includes(currentKingPosition)) return movesTop;
+
+  generateMovesRight(
+    piece,
+    currentColumnLetterIndex,
+    currentRowNumber,
+    maxColumns,
+    movesRight,
+    currentBoard,
+    true,
+  );
+
+  if (movesRight.includes(currentKingPosition)) return movesRight;
+
+  generateMovesDownwards(
+    piece,
+    currentColumnLetter,
+    currentRowNumber,
+    movesBottom,
+    currentBoard,
+    true,
+  );
+
+  if (movesBottom.includes(currentKingPosition)) return movesBottom;
+
+  generateMovesLeft(
+    piece,
+    currentColumnLetterIndex,
+    currentRowNumber,
+    movesLeft,
+    currentBoard,
+    true,
+  );
+
+  if (movesLeft.includes(currentKingPosition)) return movesLeft;
+  return [];
+};
+
 const validRookMovesFromSquare = (
   source: Square,
   piece: Piece,

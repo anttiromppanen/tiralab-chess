@@ -21,7 +21,11 @@ export const generateMovesLeftTop = (
     }` as Square;
 
     if (currentBoard[squareToAdd]) {
-      if (includeBlockedSquares) validMoves.push(squareToAdd);
+      if (
+        includeBlockedSquares &&
+        !arePiecesDifferentColor(piece, squareToAdd, currentBoard)
+      )
+        validMoves.push(squareToAdd);
       // if piece is opposite color, add to array
       else if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
@@ -51,7 +55,11 @@ export const generateMovesRightTop = (
     }` as Square;
 
     if (currentBoard[squareToAdd]) {
-      if (includeBlockedSquares) validMoves.push(squareToAdd);
+      if (
+        includeBlockedSquares &&
+        !arePiecesDifferentColor(piece, squareToAdd, currentBoard)
+      )
+        validMoves.push(squareToAdd);
       // if piece is opposite color, add to array
       else if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
@@ -75,7 +83,11 @@ export const generateMovesLeftBottom = (
     }` as Square;
 
     if (currentBoard[squareToAdd]) {
-      if (includeBlockedSquares) validMoves.push(squareToAdd);
+      if (
+        includeBlockedSquares &&
+        !arePiecesDifferentColor(piece, squareToAdd, currentBoard)
+      )
+        validMoves.push(squareToAdd);
       // if piece is opposite color, add to array
       else if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
@@ -100,7 +112,11 @@ export const generateMovesRightBottom = (
     }` as Square;
 
     if (currentBoard[squareToAdd]) {
-      if (includeBlockedSquares) validMoves.push(squareToAdd);
+      if (
+        includeBlockedSquares &&
+        !arePiecesDifferentColor(piece, squareToAdd, currentBoard)
+      )
+        validMoves.push(squareToAdd);
       // if piece is opposite color, add to array
       else if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
@@ -122,7 +138,11 @@ export const generateMovesUpwards = (
   for (let i = sourceRowNumber + 1; i <= maxRows; i += 1) {
     const squareToAdd = `${sourceColumnLetter}${i}` as Square;
     if (currentBoard[squareToAdd]) {
-      if (includeBlockedSquares) validMoves.push(squareToAdd);
+      if (
+        includeBlockedSquares &&
+        !arePiecesDifferentColor(piece, squareToAdd, currentBoard)
+      )
+        validMoves.push(squareToAdd);
       else if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
       break;
@@ -142,7 +162,11 @@ export const generateMovesDownwards = (
   for (let i = sourceRowNumber - 1; i >= 1; i -= 1) {
     const squareToAdd = `${sourceColumnLetter}${i}` as Square;
     if (currentBoard[squareToAdd]) {
-      if (includeBlockedSquares) validMoves.push(squareToAdd);
+      if (
+        includeBlockedSquares &&
+        !arePiecesDifferentColor(piece, squareToAdd, currentBoard)
+      )
+        validMoves.push(squareToAdd);
       else if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
       break;
@@ -162,7 +186,11 @@ export const generateMovesLeft = (
   for (let i = sourceColumnLetterIndex - 1; i >= 0; i -= 1) {
     const squareToAdd = `${horizontalBoard[i]}${sourceRowNumber}` as Square;
     if (currentBoard[squareToAdd]) {
-      if (includeBlockedSquares) validMoves.push(squareToAdd);
+      if (
+        includeBlockedSquares &&
+        !arePiecesDifferentColor(piece, squareToAdd, currentBoard)
+      )
+        validMoves.push(squareToAdd);
       if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
       break;
@@ -183,7 +211,11 @@ export const generateMovesRight = (
   for (let i = sourceColumnLetterIndex + 1; i <= maxColumns; i += 1) {
     const squareToAdd = `${horizontalBoard[i]}${sourceRowNumber}` as Square;
     if (currentBoard[squareToAdd]) {
-      if (includeBlockedSquares) validMoves.push(squareToAdd);
+      if (
+        includeBlockedSquares &&
+        !arePiecesDifferentColor(piece, squareToAdd, currentBoard)
+      )
+        validMoves.push(squareToAdd);
       if (arePiecesDifferentColor(piece, squareToAdd, currentBoard))
         validMoves.push(squareToAdd);
       break;

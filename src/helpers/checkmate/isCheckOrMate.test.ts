@@ -1,13 +1,125 @@
 import { BoardPosition, Square } from "react-chessboard/dist/chessboard/types";
-import { isChecked, isCheckmated } from "./isCheckOrMate";
+import {
+  canCheckBeBlocked,
+  isChecked,
+  isCheckmated,
+  possibleKingMovesAfterCheck,
+} from "./isCheckOrMate";
+import { initialBoardPosition } from "../../const/common";
+import attackedSquares from "../attackedSquares";
 
 describe("isCheckOrMate.ts", () => {
   let emptyBoard: BoardPosition = {};
+  let initialBoard: BoardPosition = initialBoardPosition;
   let expectedPossibleMoves: Square[];
 
   beforeEach(() => {
     emptyBoard = {};
+    initialBoard = initialBoardPosition;
     expectedPossibleMoves = [];
+  });
+
+  describe("possibleKingMovesAfterCheck", () => {
+    it("should return correct squares for white", () => {
+      emptyBoard.b8 = "bP";
+      emptyBoard.b7 = "wK";
+      emptyBoard.b5 = "bR";
+
+      const inTurn = "w";
+      const { allAttackedSquares, kingPositions } = attackedSquares(
+        inTurn,
+        emptyBoard,
+      );
+
+      const validSquaresForKing = possibleKingMovesAfterCheck(
+        inTurn,
+        kingPositions,
+        allAttackedSquares,
+        emptyBoard,
+      );
+      expectedPossibleMoves = ["a8", "b8", "c8", "a6", "c6"];
+
+      expect(expectedPossibleMoves.sort()).toStrictEqual(
+        validSquaresForKing.sort(),
+      );
+    });
+
+    it("should return correct squares for black", () => {
+      emptyBoard.h8 = "bK";
+      emptyBoard.e6 = "wB";
+      emptyBoard.e5 = "wB";
+
+      const inTurn = "b";
+      const { allAttackedSquares, kingPositions } = attackedSquares(
+        inTurn,
+        emptyBoard,
+      );
+
+      const validSquaresForKing = possibleKingMovesAfterCheck(
+        inTurn,
+        kingPositions,
+        allAttackedSquares,
+        emptyBoard,
+      );
+      expectedPossibleMoves = ["h7"];
+
+      expect(expectedPossibleMoves.sort()).toStrictEqual(
+        validSquaresForKing.sort(),
+      );
+    });
+  });
+
+  describe("canCheckBeBlocked", () => {
+    it("should return correct squares when check can be blocked by white", () => {
+      emptyBoard.g8 = "bB";
+      emptyBoard.c3 = "bP";
+      emptyBoard.a2 = "bP";
+      emptyBoard.b2 = "bB";
+      emptyBoard.a1 = "wK";
+      emptyBoard.c1 = "wP";
+
+      const result = canCheckBeBlocked("w", emptyBoard);
+
+      expect(result).toStrictEqual(["c1"]);
+    });
+
+    it("should return empty list when check cannot be blocked by white", () => {
+      emptyBoard.e4 = "bB";
+      emptyBoard.c3 = "bP";
+      emptyBoard.a2 = "bP";
+      emptyBoard.b2 = "bB";
+      emptyBoard.a1 = "wK";
+      emptyBoard.d1 = "wP";
+
+      const result = canCheckBeBlocked("w", emptyBoard);
+
+      expect(result).toStrictEqual([]);
+    });
+
+    it("should return correct squares when check can be blocked by black", () => {
+      initialBoard.c7 = undefined;
+      initialBoard.f7 = undefined;
+      initialBoard.c6 = "bP";
+      initialBoard.f5 = "bP";
+      initialBoard.h5 = "wQ";
+      initialBoard.e3 = "wP";
+      initialBoard.e2 = undefined;
+      initialBoard.d1 = undefined;
+
+      const result = canCheckBeBlocked("b", initialBoard);
+
+      expect(result).toStrictEqual(["g7"]);
+    });
+
+    it("should return empty list when check cannot be blocked by black", () => {
+      emptyBoard.a8 = "bK";
+      emptyBoard.c8 = "bB";
+      emptyBoard.b6 = "wN";
+
+      const result = canCheckBeBlocked("b", emptyBoard);
+
+      expect(result).toStrictEqual([]);
+    });
   });
 
   describe("isChecked", () => {
@@ -15,32 +127,36 @@ describe("isCheckOrMate.ts", () => {
       emptyBoard.c8 = "bR";
       emptyBoard.c1 = "wK";
 
-      const { isKingAttacked, possibleMovesAfterCheck } = isChecked(
-        "w",
+      const inTurn = "w";
+      const { allAttackedSquares, kingPositions } = attackedSquares(
+        inTurn,
         emptyBoard,
       );
-      expectedPossibleMoves = ["b1", "b2", "d2", "d1"];
+      const isKingAttacked = isChecked(
+        inTurn,
+        kingPositions,
+        allAttackedSquares,
+      );
 
       expect(isKingAttacked).toBe(true);
-      expect(expectedPossibleMoves.sort()).toStrictEqual(
-        possibleMovesAfterCheck.sort(),
-      );
     });
 
     it("should return false when white king is not checked", () => {
       emptyBoard.b7 = "bQ";
       emptyBoard.d3 = "wK";
 
-      const { isKingAttacked, possibleMovesAfterCheck } = isChecked(
-        "w",
+      const inTurn = "w";
+      const { allAttackedSquares, kingPositions } = attackedSquares(
+        inTurn,
         emptyBoard,
       );
-      expectedPossibleMoves = ["c2", "c3", "c4", "d4", "e3", "e2", "d2"];
+      const isKingAttacked = isChecked(
+        inTurn,
+        kingPositions,
+        allAttackedSquares,
+      );
 
       expect(isKingAttacked).toBe(false);
-      expect(expectedPossibleMoves.sort()).toStrictEqual(
-        possibleMovesAfterCheck.sort(),
-      );
     });
 
     it("should return true when black king is checked", () => {
@@ -48,16 +164,18 @@ describe("isCheckOrMate.ts", () => {
       emptyBoard.b3 = "wP";
       emptyBoard.h1 = "wB";
 
-      const { isKingAttacked, possibleMovesAfterCheck } = isChecked(
-        "b",
+      const inTurn = "b";
+      const { allAttackedSquares, kingPositions } = attackedSquares(
+        inTurn,
         emptyBoard,
       );
-      expectedPossibleMoves = ["b8", "a7"];
+      const isKingAttacked = isChecked(
+        inTurn,
+        kingPositions,
+        allAttackedSquares,
+      );
 
       expect(isKingAttacked).toBe(true);
-      expect(expectedPossibleMoves.sort()).toStrictEqual(
-        possibleMovesAfterCheck.sort(),
-      );
     });
 
     it("should return false when black king is not checked", () => {
@@ -66,27 +184,40 @@ describe("isCheckOrMate.ts", () => {
       emptyBoard.a4 = "wB";
       emptyBoard.c3 = "wN";
 
-      const { isKingAttacked, possibleMovesAfterCheck } = isChecked(
-        "b",
+      const inTurn = "b";
+      const { allAttackedSquares, kingPositions } = attackedSquares(
+        inTurn,
         emptyBoard,
       );
-      expectedPossibleMoves = ["b6", "d6", "d4", "c4", "b4"];
+      const isKingAttacked = isChecked(
+        inTurn,
+        kingPositions,
+        allAttackedSquares,
+      );
 
       expect(isKingAttacked).toBe(false);
-      expect(expectedPossibleMoves.sort()).toStrictEqual(
-        possibleMovesAfterCheck.sort(),
-      );
     });
   });
 
   describe("isCheckmated", () => {
     it("should return true if white is checkmated", () => {
-      emptyBoard.h8 = "wK";
-      emptyBoard.g7 = "bB";
-      emptyBoard.c4 = "bB";
-      emptyBoard.h6 = "bK";
+      emptyBoard.h1 = "wK";
+      emptyBoard.g2 = "bP";
+      emptyBoard.c5 = "bB";
+      emptyBoard.h3 = "bK";
 
-      const result = isCheckmated("w", emptyBoard);
+      const { allAttackedSquares, kingPositions } = attackedSquares(
+        "w",
+        emptyBoard,
+      );
+      const canBeBlocked = canCheckBeBlocked("w", emptyBoard);
+      const result = isCheckmated(
+        kingPositions,
+        "w",
+        allAttackedSquares,
+        canBeBlocked,
+        emptyBoard,
+      );
       expect(result).toBe(true);
     });
 
@@ -95,7 +226,19 @@ describe("isCheckOrMate.ts", () => {
       emptyBoard.a7 = "bP";
       emptyBoard.b6 = "bN";
 
-      const result = isCheckmated("w", emptyBoard);
+      const { allAttackedSquares, kingPositions } = attackedSquares(
+        "w",
+        emptyBoard,
+      );
+      const canBeBlocked = canCheckBeBlocked("w", emptyBoard);
+      const result = isCheckmated(
+        kingPositions,
+        "w",
+        allAttackedSquares,
+        canBeBlocked,
+        emptyBoard,
+      );
+
       expect(result).toBe(false);
     });
 
@@ -107,7 +250,19 @@ describe("isCheckOrMate.ts", () => {
       emptyBoard.h7 = "wQ";
       emptyBoard.g1 = "wK";
 
-      const result = isCheckmated("b", emptyBoard);
+      const { allAttackedSquares, kingPositions } = attackedSquares(
+        "b",
+        emptyBoard,
+      );
+      const canBeBlocked = canCheckBeBlocked("w", emptyBoard);
+      const result = isCheckmated(
+        kingPositions,
+        "b",
+        allAttackedSquares,
+        canBeBlocked,
+        emptyBoard,
+      );
+
       expect(result).toBe(true);
     });
 
@@ -115,7 +270,42 @@ describe("isCheckOrMate.ts", () => {
       emptyBoard.e4 = "wB";
       emptyBoard.f4 = "wB";
       emptyBoard.h1 = "bK";
-      const result = isCheckmated("b", emptyBoard);
+
+      const { allAttackedSquares, kingPositions } = attackedSquares(
+        "w",
+        emptyBoard,
+      );
+      const canBeBlocked = canCheckBeBlocked("b", emptyBoard);
+      const result = isCheckmated(
+        kingPositions,
+        "b",
+        allAttackedSquares,
+        canBeBlocked,
+        emptyBoard,
+      );
+
+      expect(result).toBe(false);
+    });
+
+    it("should not be checkmate for white if black can block the check", () => {
+      initialBoard.d1 = undefined;
+      initialBoard.f7 = undefined;
+      initialBoard.f5 = "bP";
+      initialBoard.h5 = "wQ";
+
+      const { allAttackedSquares, kingPositions } = attackedSquares(
+        "w",
+        emptyBoard,
+      );
+      const canBeBlocked = canCheckBeBlocked("b", emptyBoard);
+      const result = isCheckmated(
+        kingPositions,
+        "b",
+        allAttackedSquares,
+        canBeBlocked,
+        emptyBoard,
+      );
+
       expect(result).toBe(false);
     });
   });

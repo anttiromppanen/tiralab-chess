@@ -125,6 +125,52 @@ export const isSquareBlocked = (
   return sourceColumn === targetColumn;
 };
 
+export const isKingAttackedByPawn = (
+  piece: Piece,
+  source: Square,
+  currentKingPosition: Square,
+) => {
+  const attackedSquares: Square[] = [];
+  const columnLetter = source[0];
+  const columnLetterIndex = horizontalBoard.indexOf(columnLetter);
+  const rowNumber = Number(source[1]);
+
+  const upLeftSquare = `${horizontalBoard[columnLetterIndex - 1]}${
+    rowNumber + 1
+  }` as Square;
+  const upRightSquare = `${horizontalBoard[columnLetterIndex + 1]}${
+    rowNumber + 1
+  }` as Square;
+  const downLeftSquare = `${horizontalBoard[columnLetterIndex - 1]}${
+    rowNumber - 1
+  }` as Square;
+  const downRightSquare = `${horizontalBoard[columnLetterIndex + 1]}${
+    rowNumber - 1
+  }` as Square;
+
+  if (isPieceWhite(piece)) {
+    if (isValidSquare(columnLetterIndex - 1, rowNumber + 1))
+      if (currentKingPosition === upLeftSquare) {
+        attackedSquares.push(upLeftSquare);
+      }
+    if (isValidSquare(columnLetterIndex + 1, rowNumber + 1))
+      if (currentKingPosition === upRightSquare) {
+        attackedSquares.push(upRightSquare);
+      }
+  } else {
+    if (isValidSquare(columnLetterIndex - 1, rowNumber - 1))
+      if (currentKingPosition === downLeftSquare) {
+        attackedSquares.push(downLeftSquare);
+      }
+    if (isValidSquare(columnLetterIndex + 1, rowNumber - 1))
+      if (currentKingPosition === downRightSquare) {
+        attackedSquares.push(downRightSquare);
+      }
+  }
+
+  return attackedSquares;
+};
+
 export const allAttackedSquaresByPawn = (
   piece: Piece,
   source: Square,
