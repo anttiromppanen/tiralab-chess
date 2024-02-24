@@ -122,16 +122,8 @@ const validPawnMove = (
   return false;
 };
 
-export const isSquareBlocked = (
-  source: Square,
-  target: Square,
-  currentBoard: BoardPosition,
-) => {
-  if (currentBoard[target] === undefined) return false;
-  const sourceColumn = currentBoard[source]?.[0];
-  const targetColumn = currentBoard[target]?.[0];
-  return sourceColumn === targetColumn;
-};
+export const isSquareBlocked = (target: Square, currentBoard: BoardPosition) =>
+  currentBoard[target] !== undefined;
 
 export const isKingAttackedByPawn = (
   piece: Piece,
@@ -251,7 +243,7 @@ export const validPawnMovesFromSquare = (
   if (isPieceWhite(piece)) {
     if (
       validMoveForwardForWhite(source, straightUpSquare) &&
-      !isSquareBlocked(source, straightUpSquare, currentBoard)
+      !isSquareBlocked(straightUpSquare, currentBoard)
     )
       validPawnMoves.push(straightUpSquare);
     if (canPawnCapture(currentBoard, source, upLeftSquare, piece))
@@ -262,9 +254,10 @@ export const validPawnMovesFromSquare = (
   if (!isPieceWhite(piece)) {
     if (
       validMoveForwardForBlack(source, straightDownSquare) &&
-      !isSquareBlocked(source, straightDownSquare, currentBoard)
-    )
+      !isSquareBlocked(straightDownSquare, currentBoard)
+    ) {
       validPawnMoves.push(straightDownSquare);
+    }
     if (canPawnCapture(currentBoard, source, downLeftSquare, piece))
       validPawnMoves.push(downLeftSquare);
     if (canPawnCapture(currentBoard, source, downRightSquare, piece))

@@ -13,6 +13,23 @@ describe("generateAllMovesFromPosition.ts", () => {
     whiteShouldIncludeSquares = [];
   });
 
+  it.only("should return correct squares for pawn", () => {
+    emptyBoard.h6 = "bP";
+    emptyBoard.h5 = "wP";
+
+    const whitePawn = generateAllMovesFromPosition(emptyBoard).filter(
+      (item: MoveInfo) => item.square === "h5",
+    );
+    const blackPawn = generateAllMovesFromPosition(emptyBoard).filter(
+      (item) => item.square === "h6",
+    );
+    whiteShouldIncludeSquares = [];
+    blackShouldIncludeSquares = [];
+
+    expect(whitePawn).toStrictEqual(whiteShouldIncludeSquares);
+    expect(blackPawn).toStrictEqual(blackShouldIncludeSquares);
+  });
+
   it("should return correct squares for knight", () => {
     emptyBoard.d6 = "bR";
     emptyBoard.a5 = "bP";

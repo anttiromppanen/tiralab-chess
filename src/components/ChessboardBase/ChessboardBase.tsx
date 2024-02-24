@@ -34,7 +34,13 @@ function ChessboardBase() {
 
   useEffect(() => {
     if (colorToMove === "b") {
-      calculateBestMoveRoot(2, currentBoardPositions);
+      const { bestMoveFromSquare, bestMoveToSquare, bestPiece } =
+        calculateBestMoveRoot(3, currentBoardPositions);
+      setColorToMove("w");
+      const board = currentBoardPositions;
+      board[bestMoveFromSquare as Square] = undefined;
+      board[bestMoveToSquare as Square] = bestPiece;
+      setCurrentBoardPositions(board);
     }
   }, [colorToMove, currentBoardPositions]);
 
