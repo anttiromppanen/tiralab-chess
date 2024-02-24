@@ -10,6 +10,7 @@ import {
 } from "../../const/common";
 import {
   getRowAndColumnFromSquare,
+  isFirstMoveForPawn,
   isPieceWhite,
   isValidSquare,
 } from "../common";
@@ -84,7 +85,15 @@ const validPawnMove = (
   setCurrentPosition: (newPosition: BoardPosition) => void,
 ) => {
   if (currentBoard === null) return false;
+
   const newBoardPosition = currentBoard;
+  const sourceSquarePlusTwoRows = `${sourceSquare[0]}${
+    Number(sourceSquare[1]) + 2
+  }` as Square;
+  const sourceSquareMinusTwoRows = `${sourceSquare[0]}${
+    Number(sourceSquare[1]) - 2
+  }` as Square;
+  const isFirstMove = isFirstMoveForPawn(piece, sourceSquare);
 
   if (canPawnCapture(currentBoard, sourceSquare, targetSquare, piece)) {
     newBoardPosition[targetSquare] = piece;
@@ -110,10 +119,41 @@ const validPawnMove = (
   }
 
   if (
+    isPieceWhite(piece) &&
+    isFirstMove &&
+    isValidSquare(
+      horizontalBoardByLetter[sourceSquare[0]],
+      Number(sourceSquare[1]) + 2,
+    ) &&
+    currentBoard[sourceSquarePlusTwoRows] === undefined
+  ) {
+    newBoardPosition[sourceSquarePlusTwoRows] = piece;
+    newBoardPosition[sourceSquare] = undefined;
+    setCurrentPosition(newBoardPosition);
+    return true;
+  }
+
+  if (
     !isPieceWhite(piece) &&
     validMoveForwardForBlack(sourceSquare, targetSquare)
   ) {
     newBoardPosition[targetSquare] = piece;
+    newBoardPosition[sourceSquare] = undefined;
+    setCurrentPosition(newBoardPosition);
+    return true;
+  }
+
+  if (
+    !isPieceWhite(piece) &&
+    validMoveForwardForBlack(sourceSquare, targetSquare) &&
+    isFirstMove &&
+    isValidSquare(
+      horizontalBoardByLetter[sourceSquare[0]],
+      Number(sourceSquare[1]) - 2,
+    ) &&
+    currentBoard[sourceSquareMinusTwoRows] === undefined
+  ) {
+    newBoardPosition[sourceSquareMinusTwoRows] = piece;
     newBoardPosition[sourceSquare] = undefined;
     setCurrentPosition(newBoardPosition);
     return true;
@@ -216,6 +256,7 @@ export const validPawnMovesFromSquare = (
   piece: Piece,
   currentBoard: BoardPosition,
 ) => {
+  const isFirstMove = isFirstMoveForPawn(piece, source);
   const validPawnMoves: Square[] = [];
   const {
     currentColumnLetter: columnLetter,
@@ -238,9 +279,18 @@ export const validPawnMovesFromSquare = (
   const downRightSquare = `${horizontalBoardByIndex[columnLetterIndex + 1]}${
     rowNumber - 1
   }` as Square;
+  const twoSquaresUp = `${columnLetter}${rowNumber + 2}` as Square;
+  const twoSquaresDown = `${columnLetter}${rowNumber - 2}` as Square;
 
   // validation for possible squares
   if (isPieceWhite(piece)) {
+    if (
+      isValidSquare(columnLetterIndex, rowNumber + 2) &&
+      !isSquareBlocked(twoSquaresUp, currentBoard) &&
+      isFirstMove
+    ) {
+      validPawnMoves.push(twoSquaresUp);
+    }
     if (
       validMoveForwardForWhite(source, straightUpSquare) &&
       !isSquareBlocked(straightUpSquare, currentBoard)
@@ -252,6 +302,13 @@ export const validPawnMovesFromSquare = (
       validPawnMoves.push(upRightSquare);
   }
   if (!isPieceWhite(piece)) {
+    if (
+      isValidSquare(columnLetterIndex, rowNumber - 2) &&
+      !isSquareBlocked(twoSquaresDown, currentBoard) &&
+      isFirstMove
+    ) {
+      validPawnMoves.push(twoSquaresDown);
+    }
     if (
       validMoveForwardForBlack(source, straightDownSquare) &&
       !isSquareBlocked(straightDownSquare, currentBoard)

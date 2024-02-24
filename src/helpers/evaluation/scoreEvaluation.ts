@@ -12,6 +12,7 @@ const knightValue = 310;
 const bishopValue = 320;
 const rookValue = 500;
 const queenValue = 900;
+const kingValue = 10000;
 
 const pieceSquareTablesWhite = {
   P: [
@@ -107,6 +108,8 @@ const getScoreForPiece = (piece: Piece, square: Square) => {
       return rookValue + score;
     case "Q":
       return queenValue + score;
+    case "K":
+      return kingValue + score;
     default:
       return 0;
   }

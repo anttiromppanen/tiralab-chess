@@ -31,3 +31,6 @@ export const getRowAndColumnFromSquare = (square: Square) => {
 
   return { currentColumnLetter, currentColumnLetterIndex, currentRowNumber };
 };
+
+export const isFirstMoveForPawn = (piece: Piece, square: Square) =>
+  piece[1] === "P" && (square[1] === "2" || square[1] === "7");

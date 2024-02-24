@@ -91,8 +91,8 @@ export const horizontalBoardByIndex: { [key: number]: string } = {
 };
 
 export {
+  blackPieceValues,
   initialBoardPosition,
   pieceValues,
   whitePieceValues,
-  blackPieceValues,
 };
