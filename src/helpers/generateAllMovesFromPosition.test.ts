@@ -13,7 +13,7 @@ describe("generateAllMovesFromPosition.ts", () => {
     whiteShouldIncludeSquares = [];
   });
 
-  it.only("should return correct squares for pawn", () => {
+  it("should return correct squares for pawn", () => {
     emptyBoard.h6 = "bP";
     emptyBoard.h5 = "wP";
 
