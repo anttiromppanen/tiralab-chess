@@ -32,5 +32,10 @@ export const getRowAndColumnFromSquare = (square: Square) => {
   return { currentColumnLetter, currentColumnLetterIndex, currentRowNumber };
 };
 
-export const isFirstMoveForPawn = (piece: Piece, square: Square) =>
-  piece[1] === "P" && (square[1] === "2" || square[1] === "7");
+export const isFirstMoveForPawn = (piece: Piece, square: Square) => {
+  const pieceType = piece[1];
+  const rowNumber = square[1];
+
+  if (isPieceWhite(piece)) return pieceType === "P" && rowNumber === "2";
+  return pieceType === "P" && rowNumber === "7";
+};

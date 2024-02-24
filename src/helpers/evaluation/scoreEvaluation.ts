@@ -121,6 +121,7 @@ const scoreEvaluation = (currentBoard: BoardPosition) => {
   Object.entries(currentBoard).forEach((item) => {
     const square = item[0] as Square;
     const piece = item[1] as Piece;
+
     if (piece === undefined || square === undefined) return;
     if (isPieceWhite(piece)) whiteScore += getScoreForPiece(piece, square);
     else blackScore += getScoreForPiece(piece, square);
@@ -149,7 +150,7 @@ export const calculateBestMove = (
 
   let bestMove = isMaximizingPlayer ? -Infinity : Infinity;
 
-  for (let i = 0; i < movesArray.length; i += 1) {
+  for (let i = 0; i < movesArray.length - 1; i += 1) {
     const currentMove = movesArray[i];
     const { square, piece, move } = currentMove;
     const newBoard = { ...currentBoard };

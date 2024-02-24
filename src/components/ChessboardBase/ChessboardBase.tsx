@@ -27,10 +27,33 @@ function ChessboardBase() {
   const addPointsForBlack = usePointsStore(
     (state) => state.increaseBlackPoints,
   );
-  const [updateIsCheckmate] = useGameStore(
+  const isCheckmatedStore = useGameStore((state) => state.isCheckmate);
+  const [updateIsCheck, updateIsCheckmate] = useGameStore(
     useShallow((state) => [state.updateIsCheck, state.updateIsCheckmate]),
   );
   const [colorToMove, setColorToMove] = useState<"w" | "b">("w");
+
+  useEffect(() => {
+    const { allAttackedSquares, kingPositions } = attackedSquares(
+      colorToMove,
+      currentBoardPositions,
+    );
+    const checked = isChecked(colorToMove, kingPositions, allAttackedSquares);
+
+    if (checked) {
+      updateIsCheck(true);
+      return;
+    }
+
+    if (isCheckmatedStore) updateIsCheckmate();
+    updateIsCheck(false);
+  }, [
+    colorToMove,
+    currentBoardPositions,
+    isCheckmatedStore,
+    updateIsCheck,
+    updateIsCheckmate,
+  ]);
 
   useEffect(() => {
     if (colorToMove === "b") {

@@ -8,7 +8,7 @@ interface GameState {
 
 interface GameActions {
   updateScore: (amount: number) => void;
-  updateIsCheck: () => void;
+  updateIsCheck: (value: boolean) => void;
   updateIsCheckmate: () => void;
   resetScore: () => void;
 }
@@ -22,7 +22,7 @@ const useGameStore = create<GameStore>((set) => ({
 
   updateScore: (amount: number) =>
     set((state) => ({ score: state.score + amount })),
-  updateIsCheck: () => set((state) => ({ isCheck: !state.isCheck })),
+  updateIsCheck: (value: boolean) => set({ isCheck: value }),
   updateIsCheckmate: () => set({ isCheckmate: true }),
   resetScore: () => set({ score: 0 }),
 }));
